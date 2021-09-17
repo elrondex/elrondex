@@ -1,4 +1,4 @@
-### Hi there 👋
+### Elixir libraries to interact with Elrond Blockchain ⚡
 
 This is **DRAFT** code it will definitely be changed in the near future. 
 
