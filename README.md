@@ -1,5 +1,7 @@
 ### Hi there 👋
 
+This is **DRAFT** code it will definitely be changed in the near future. 
+
 <!--
 **elrondex/elrondex** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
