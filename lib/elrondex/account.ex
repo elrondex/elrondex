@@ -65,7 +65,7 @@ defmodule Elrondex.Account do
 
     # Generate master node
     <<private_key::binary-32, chain_code::binary-32>> =
-      if (get_otp_version() >= 24) do
+      if get_otp_version() >= 24 do
         :crypto.mac(:hmac, :sha512, "ed25519 seed", mnemonic_seed)
       else
         :crypto.hmac(:sha512, "ed25519 seed", mnemonic_seed)
@@ -100,12 +100,14 @@ defmodule Elrondex.Account do
   defp ckd_priv({key, chain_code} = node, [h | t]) do
     index = 2_147_483_648 + h
     data = <<0, key::binary, index::32>>
+
     <<derived_key::binary-32, child_chain::binary-32>> =
-      if (get_otp_version() >= 24) do
+      if get_otp_version() >= 24 do
         :crypto.mac(:hmac, :sha512, chain_code, data)
       else
         :crypto.hmac(:sha512, chain_code, data)
       end
+
     ckd_priv({derived_key, child_chain}, t)
   end
 
@@ -134,7 +136,7 @@ defmodule Elrondex.Account do
   end
 
   def get_otp_version do
-    case Float.parse(System.otp_release) do
+    case Float.parse(System.otp_release()) do
       {result, ""} -> result
       {_result, _rest} -> 16.0
       :error -> 16.0

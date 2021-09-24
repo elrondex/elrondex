@@ -1,4 +1,4 @@
-### Elixir libraries to interact with Elrond Blockchain ⚡
+### Elixir libraries to interact with Elrond Blockchain ⚡ and its components $EGLD, Arwen, WASM, DeFI, SC, ESDTs, NFTs, SFTs, $MEX, DEX, AMM
 
 This is **DRAFT** code it will definitely be changed in the near future. 
 
