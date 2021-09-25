@@ -34,7 +34,8 @@ defmodule Elrondex.MixProject do
       {:jason, "~> 1.2"},
       {:tesla, "~> 1.4"},
       {:mnemo, "~> 0.1.3"},
-      {:bech32, "~> 1.0"}
+      {:bech32, "~> 1.0"},
+      {:ex_doc, "~> 0.25.3", only: :dev, runtime: false}
     ]
   end
 
