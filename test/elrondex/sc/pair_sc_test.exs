@@ -187,4 +187,81 @@ defmodule Elrondex.Sc.PairScTest do
     IO.inspect(tx_hash)
     # 1 161318 325339 052503 
   end
+
+  @tag :skip
+  test "get_first_token_id" do
+    testnet = Network.get(:testnet)
+
+    pair1 = "erd1qqqqqqqqqqqqqpgquh2r06qrjesfv5xj6v8plrqm93c6xvw70n4sfuzpmc"
+    pair2 = "erd1qqqqqqqqqqqqqpgqmffr70826epqhdf2ggsmgxgur77g53hr0n4s38y2qe"
+
+    rez_sc_call =
+      pair1
+      |> PairSc.get_first_token_id(testnet)
+
+    IO.inspect(rez_sc_call)
+
+    rez_sc_call =
+      pair1
+      |> PairSc.get_second_token_id(testnet)
+
+    IO.inspect(rez_sc_call)
+
+    rez_sc_call =
+      pair2
+      |> PairSc.get_first_token_id(testnet)
+
+    IO.inspect(rez_sc_call)
+
+    rez_sc_call =
+      pair2
+      |> PairSc.get_second_token_id(testnet)
+
+    IO.inspect(rez_sc_call)
+  end
+
+  @tag :skip
+  test "get_reserve" do
+    testnet = Network.get(:testnet)
+
+    pair1 = "erd1qqqqqqqqqqqqqpgquh2r06qrjesfv5xj6v8plrqm93c6xvw70n4sfuzpmc"
+
+    rez_sc_call =
+      pair1
+      |> PairSc.get_reserve("WEGLD-073650", testnet)
+
+    IO.inspect(rez_sc_call)
+
+    rez_sc_call =
+      pair1
+      |> PairSc.get_reserve("MEX-ec32fa", testnet)
+
+    IO.inspect(rez_sc_call)
+  end
+
+  @tag :skip
+  test "get_total_lp_token_supply" do
+    testnet = Network.get(:testnet)
+
+    pair1 = "erd1qqqqqqqqqqqqqpgquh2r06qrjesfv5xj6v8plrqm93c6xvw70n4sfuzpmc"
+
+    rez_sc_call =
+      pair1
+      |> PairSc.get_total_lp_token_supply(testnet)
+
+    IO.inspect(rez_sc_call)
+  end
+
+  @tag :skip
+  test "get_lp_token_identifier" do
+    testnet = Network.get(:testnet)
+
+    pair1 = "erd1qqqqqqqqqqqqqpgquh2r06qrjesfv5xj6v8plrqm93c6xvw70n4sfuzpmc"
+
+    rez_sc_call =
+      pair1
+      |> PairSc.get_lp_token_identifier(testnet)
+
+    IO.inspect(rez_sc_call)
+  end
 end

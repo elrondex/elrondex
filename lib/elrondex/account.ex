@@ -7,6 +7,12 @@ defmodule Elrondex.Account do
             public_key: nil,
             private_key: nil
 
+  def public_key_to_address(public_key)
+      when is_binary(public_key) and byte_size(public_key) == 32 do
+    # Compute bech32 address
+    Bech32.encode("erd", public_key)
+  end
+
   def generate_random() do
     # Compute private_key
     {_, private_key} = :crypto.generate_key(:eddsa, :ed25519)

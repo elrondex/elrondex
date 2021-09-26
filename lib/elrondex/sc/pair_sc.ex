@@ -1,5 +1,5 @@
 defmodule Elrondex.Sc.PairSc do
-  alias Elrondex.{Sc, Transaction, Account, REST, ESDT, Pair}
+  alias Elrondex.{Sc, Transaction, Account, REST, ESDT, Pair, Network}
 
   def accept_esdt_payment(%Account{} = account, %Pair{} = pair, token_identifier, value)
       when is_binary(token_identifier) and is_integer(value) do
@@ -43,5 +43,40 @@ defmodule Elrondex.Sc.PairSc do
 
     Transaction.transaction(account, pair.address, 0, data)
     |> Map.put(:gasLimit, 100_000_000)
+  end
+
+  def get_first_token_id(pair_address, %Network{} = network, opts \\ []) do
+    get_pair_token_id(pair_address, network, "getFirstTokenId", opts)
+  end
+
+  def get_second_token_id(pair_address, %Network{} = network, opts \\ []) do
+    get_pair_token_id(pair_address, network, "getSecondTokenId", opts)
+  end
+
+  defp get_pair_token_id(pair_address, %Network{} = network, method, opts \\ []) do
+    sc_call = Sc.view_map_call(pair_address, method)
+
+    with {:ok, data} <- REST.post_vm_values_query(sc_call, network),
+         {:ok, sc_return} <-
+           Sc.parse_view_sc_response(data) do
+      {:ok, sc_return |> Enum.map(&Base.decode64!/1) |> hd()}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  def get_reserve(pair_address, token_identifier, %Network{} = network, opts \\ []) do
+    sc_call = Sc.view_map_call(pair_address, "getReserve", [token_identifier])
+    REST.post_vm_values_int(sc_call, network)
+  end
+
+  def get_total_lp_token_supply(pair_address, %Network{} = network, opts \\ []) do
+    sc_call = Sc.view_map_call(pair_address, "getTotalSupply")
+    REST.post_vm_values_int(sc_call, network)
+  end
+
+  def get_lp_token_identifier(pair_address, %Network{} = network, opts \\ []) do
+    Sc.view_map_call(pair_address, "getLpTokenIdentifier")
+    |> REST.post_vm_values_string(network)
   end
 end

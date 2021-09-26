@@ -89,6 +89,21 @@ defmodule Elrondex.REST do
     |> client_response(["data"])
   end
 
+  def post_vm_values_string(query_map, %Network{} = network) do
+    IO.inspect(query_map)
+
+    Tesla.post(network.endpoint.client, "/vm-values/string", query_map)
+    |> client_response(["data"])
+  end
+
+  def post_vm_values_int(query_map, %Network{} = network) do
+    IO.inspect(query_map)
+
+    Tesla.post(network.endpoint.client, "/vm-values/int", query_map)
+    |> client_response(["data"])
+    |> int_response()
+  end
+
   #######################################
 
   def client_response({:ok, response}, path \\ []) do
@@ -128,5 +143,20 @@ defmodule Elrondex.REST do
   def data_from_path(data, path) do
     IO.puts("Unexpected path for data: #{inspect(data)} path: #{inspect(path)} ")
     data
+  end
+
+  def int_response({:ok, response}) when is_binary(response) do
+    case Integer.parse(response) do
+      {value, ""} when is_integer(value) -> {:ok, value}
+      _ -> {:error, "invalid integer value #{response}"}
+    end
+  end
+
+  def int_response({:ok, response}) when is_integer(response) do
+    {:ok, response}
+  end
+
+  def int_response({:error, response}) do
+    {:error, response}
   end
 end

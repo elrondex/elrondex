@@ -5,14 +5,14 @@ defmodule Elrondex.Sc do
   Prepare map structure for pure SC function call
   Optional :caller and :value as options
   """
-  def view_map_call(sc_address, func_name, args, opts \\ []) do
+  def view_map_call(sc_address, func_name, args \\ [], opts \\ []) do
     %{
       "scAddress" => sc_address,
       "funcName" => func_name,
       "args" => Enum.map(args, &hex_encode/1)
     }
-    |> view_map_call_optional(:caller, Keyword.get(opts, :caller))
-    |> view_map_call_optional(:value, Keyword.get(opts, :value))
+    |> view_map_call_optional("caller", Keyword.get(opts, :caller))
+    |> view_map_call_optional("value", Keyword.get(opts, :value))
   end
 
   defp view_map_call_optional(map, opt_param, nil) do
@@ -45,4 +45,19 @@ defmodule Elrondex.Sc do
 
   defp hex_pad(value) when is_binary(value),
     do: "0" <> value
+
+  def parse_view_sc_response(%{"returnCode" => "ok", "returnData" => return_data} = response) do
+    IO.inspect(response)
+    {:ok, return_data}
+  end
+
+  def parse_view_sc_response(%{"returnCode" => return_code, "returnMessage" => return_message}) do
+    # TODO map vs binary/string
+    {:error, %{return_code: return_code, return_message: return_message}}
+  end
+
+  def parse_view_sc_response(response) do
+    IO.inspect(response)
+    {:error, response}
+  end
 end

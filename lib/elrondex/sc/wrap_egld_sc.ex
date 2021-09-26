@@ -6,7 +6,7 @@ defmodule Elrondex.Sc.WrapEgldSc do
   """
   # We can implement this as config or cached/genserver
   def wrapped_egld_token_id() do
-    "WEGLD-88600a"
+    "WEGLD-073650"
   end
 
   @doc """
