@@ -29,7 +29,7 @@ defmodule Elrondex.Sc.ChainlinkScTest do
   end
 
   @tag :skip
-  test "latest_price_feed test" do
+  test "latest_price_feed test new" do
     devnet = Network.get(:devnet)
 
     tx_hash =

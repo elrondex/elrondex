@@ -47,7 +47,7 @@ defmodule Elrondex.Sc.WrapEgldScTest do
   end
 
   @tag :skip
-  test "unwrapEgld test" do
+  test "unwrapEgld test new" do
     devnet = Network.get(:devnet)
 
     value = 100_000_000_000_000_000_000
