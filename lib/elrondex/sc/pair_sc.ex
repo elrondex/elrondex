@@ -45,6 +45,20 @@ defmodule Elrondex.Sc.PairSc do
     |> Map.put(:gasLimit, 100_000_000)
   end
 
+  def get_pair(pair_address, %Network{} = network, opts \\ []) do
+    with {:ok, first_token} <- get_first_token_id(pair_address, network, opts),
+         {:ok, second_token} <- get_second_token_id(pair_address, network, opts) do
+      {:ok,
+       %Pair{
+         address: pair_address,
+         first_token: first_token,
+         second_token: second_token
+       }}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
   def get_first_token_id(pair_address, %Network{} = network, opts \\ []) do
     get_pair_token_id(pair_address, network, "getFirstTokenId", opts)
   end

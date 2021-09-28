@@ -13,6 +13,12 @@ defmodule Elrondex.Account do
     Bech32.encode("erd", public_key)
   end
 
+  def public_key_to_address(hex_public_key)
+      when is_binary(hex_public_key) and byte_size(hex_public_key) == 64 do
+    Base.decode16!(hex_public_key, case: :mixed)
+    |> public_key_to_address()
+  end
+
   def generate_random() do
     # Compute private_key
     {_, private_key} = :crypto.generate_key(:eddsa, :ed25519)

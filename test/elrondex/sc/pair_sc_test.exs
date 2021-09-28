@@ -264,4 +264,17 @@ defmodule Elrondex.Sc.PairScTest do
 
     IO.inspect(rez_sc_call)
   end
+
+  @tag :skip
+  test "get_pair" do
+    testnet = Network.get(:testnet)
+
+    pair1 = "erd1qqqqqqqqqqqqqpgquh2r06qrjesfv5xj6v8plrqm93c6xvw70n4sfuzpmc"
+
+    rez_sc_call =
+      pair1
+      |> PairSc.get_pair(testnet)
+
+    IO.inspect(rez_sc_call)
+  end
 end

@@ -83,7 +83,7 @@ defmodule Elrondex.Network do
 
     # |> Endpoint.new("https://api.elrond.com")
 
-    %Network{name: :mainnet, endpoint: endpoint}
+    %Network{name: :mainnet, endpoint: endpoint, erd_chain_id: "1"}
   end
 
   def testnet(opts \\ []) do
@@ -91,9 +91,12 @@ defmodule Elrondex.Network do
       opts
       |> Keyword.get(:endpoint, :proxy)
       # |> Endpoint.new("https://testnet-api.elrond.com")
+      # ok
       |> Endpoint.new("https://testnet-gateway.elrond.com")
 
-    %Network{name: :testnet, endpoint: endpoint}
+    # |> Endpoint.new("http://10.192.192.8:80801/")
+
+    %Network{name: :testnet, endpoint: endpoint, erd_chain_id: "T"}
   end
 
   def devnet(opts \\ []) do
@@ -103,7 +106,7 @@ defmodule Elrondex.Network do
       # |> Endpoint.new("https://devnet-api.elrond.com")
       |> Endpoint.new("https://devnet-gateway.elrond.com")
 
-    %Network{name: :devnet, endpoint: endpoint}
+    %Network{name: :devnet, endpoint: endpoint, erd_chain_id: "D"}
   end
 
   def config(network, config) do

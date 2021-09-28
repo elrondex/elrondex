@@ -5,11 +5,22 @@ defmodule Elrondex.NetworkTest do
 
   test "default mainnet" do
     mainnet = Network.mainnet()
+    # mainnet = Network.get(:mainnet)
     assert mainnet.name == :mainnet
+    assert mainnet.erd_chain_id == "1"
   end
 
   test "default testnet" do
-    mainnet = Network.testnet()
-    assert mainnet.name == :testnet
+    testnet = Network.testnet()
+    # testnet = Network.get(:testnet)
+    assert testnet.name == :testnet
+    assert testnet.erd_chain_id == "T"
+  end
+
+  test "default devnet" do
+    devnet = Network.devnet()
+    # devnet = Network.get(:devnet)
+    assert devnet.name == :devnet
+    assert devnet.erd_chain_id == "D"
   end
 end
