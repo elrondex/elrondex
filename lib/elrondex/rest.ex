@@ -15,6 +15,28 @@ defmodule Elrondex.REST do
     |> client_response(["config"])
   end
 
+  # for observer node
+  def get_network_status(%Network{} = network) do
+    Tesla.get(network.endpoint.client, "/network/status")
+    |> client_response(["status"])
+  end
+
+  # for observer node
+  def get_block_by_nonce(nonce, %Network{} = network, query_opts \\ []) do
+    query = Keyword.take(query_opts, [:withTxs])
+
+    Tesla.get(network.endpoint.client, "/block/by-nonce/#{nonce}", query: query)
+    |> client_response(["block"])
+  end
+
+  # for observer node
+  def get_block_by_hash(hash, %Network{} = network, query_opts \\ []) do
+    query = Keyword.take(query_opts, [:withTxs])
+
+    Tesla.get(network.endpoint.client, "/block/by-hash/#{hash}", query: query)
+    |> client_response(["block"])
+  end
+
   # TODO network first arg? or second?
   def get_address(%Network{} = network, bech32) do
     Tesla.get(network.endpoint.client, "/address/#{bech32}")
