@@ -1,11 +1,11 @@
 defmodule Elrondex.Block do
-  alias Elrondex.{Block, Struct}
+  alias Elrondex.{Block, MiniBlock, Struct}
 
   defstruct accumulatedFees: nil,
             developerFees: nil,
             epoch: nil,
             hash: nil,
-            # miniBlocks: nil,
+            miniBlocks: nil,
             nonce: nil,
             numTxs: nil,
             prevBlockHash: nil,
@@ -21,6 +21,7 @@ defmodule Elrondex.Block do
       {:developerFees, "developerFees", :integer, true, 0, 0},
       {:epoch, "epoch", :integer, true, 0, 0},
       {:hash, "hash", :string, true, 0, nil},
+      {:miniBlocks, "miniBlocks", :list, true, 0, &MiniBlock.from_payload/2},
       {:nonce, "nonce", :integer, true, 0, 0},
       {:numTxs, "numTxs", :integer, true, 0, 0},
       {:prevBlockHash, "prevBlockHash", :string, true, 0, nil},

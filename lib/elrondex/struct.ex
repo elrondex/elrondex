@@ -1,4 +1,5 @@
 defmodule Elrondex.Struct do
+  # TODO map to empty map
   def struct_load(struct, %{}, [], _version) do
     struct
   end
@@ -39,6 +40,17 @@ defmodule Elrondex.Struct do
           since_version >= version,
           default
         )
+
+      :list ->
+        struct_set_list(
+          struct,
+          struct_field,
+          Map.get(payload, payload_field),
+          require,
+          since_version >= version,
+          default,
+          version
+        )
     end
     |> struct_load(Map.delete(payload, payload_field), tail_struct_fields, version)
   end
@@ -75,7 +87,7 @@ defmodule Elrondex.Struct do
   end
 
   def struct_set_integer(struct, key, nil, @require_no, _since_match, default)
-      when is_integer(default) do
+      when is_integer(default) or default == nil do
     Map.put(struct, key, default)
   end
 
@@ -84,7 +96,7 @@ defmodule Elrondex.Struct do
   end
 
   def struct_set_integer(struct, key, nil, @require_yes, @since_match_yes, _default) do
-    raise "missign value for key #{key} when load ShardStatus struct"
+    raise "missign value for key #{key} when load #{struct.__struct__} struct"
   end
 
   # struct, key, value, require, version_match, default
@@ -94,7 +106,7 @@ defmodule Elrondex.Struct do
   end
 
   def struct_set_string(struct, key, nil, @require_no, _since_match, default)
-      when is_binary(default) do
+      when is_binary(default) or default == nil do
     Map.put(struct, key, default)
   end
 
@@ -104,5 +116,20 @@ defmodule Elrondex.Struct do
 
   def struct_set_string(struct, key, nil, @require_yes, @since_match_yes, _default) do
     raise "missign value for key #{key} when load #{struct.__struct__} struct"
+  end
+
+  # struct, key, value, require, version_match, default
+  def struct_set_list(struct, key, value, _require, _since_match, default, version)
+      when is_list(value) and is_function(default, 2) do
+    Map.put(struct, key, Enum.map(value, fn elem -> default.(elem, 2) end))
+  end
+
+  def struct_set_list(struct, key, value, _require, _since_match, _default, _version)
+      when is_list(value) do
+    Map.put(struct, key, value)
+  end
+
+  def struct_set_list(struct, key, nil, _require, _since_match, _default, _version) do
+    Map.put(struct, key, nil)
   end
 end
