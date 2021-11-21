@@ -35,13 +35,14 @@ defmodule Elrondex.MixProject do
       {:tesla, "~> 1.4"},
       {:mnemo, "~> 0.1.3"},
       {:bech32, "~> 1.0"},
+      {:decimal, "~> 2.0"},
       {:ex_doc, "~> 0.25.3", only: :dev, runtime: false}
     ]
   end
 
   defp description() do
     """
-      Elixir library to interact with Elrond Blockchain and its components 
+      Elixir library to interact with Elrond Blockchain and its components
       $EGLD, Arwen, WASM, DeFI, SC, ESDTs, NFTs, SFTs, $MEX, DEX, AMM
     """
   end
