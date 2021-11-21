@@ -177,7 +177,7 @@ defmodule Elrondex.Struct do
   end
 
   def struct_set_decimal(struct, key, nil, @require_yes, @since_match_yes, _default) do
-    raise "missing value for key #{key} when load #{struct.__struct__} struct"
+    raise "missign value for key #{key} when load #{struct.__struct__} struct"
   end
 
   # struct, key, value, require, version_match, default
