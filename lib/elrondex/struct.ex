@@ -128,9 +128,11 @@ defmodule Elrondex.Struct do
 
   def struct_set_boolean(struct, key, value, require, since_match, default)
       when is_binary(value) do
-    case String.to_atom(value) do
-      bool_value when is_boolean(bool_value) ->
-        struct_set_boolean(struct, key, bool_value, require, since_match, default)
+    case String.downcase(value) do
+      "true" ->
+        struct_set_boolean(struct, key, true, require, since_match, default)
+      "false" ->
+        struct_set_boolean(struct, key, false, require, since_match, default)
 
       _ ->
         raise "invalid boolean value #{value} when load #{struct.__struct__} struct for key #{key}"
