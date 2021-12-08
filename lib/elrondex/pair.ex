@@ -1,7 +1,8 @@
 defmodule Elrondex.Pair do
   alias Elrondex.{Pair}
 
-  defstruct address: nil,
+  defstruct name: nil,
+            address: nil,
             first_token: nil,
             second_token: nil
 

@@ -1,6 +1,25 @@
 defmodule Elrondex.Sc.PairSc do
   alias Elrondex.{Sc, Transaction, Account, REST, ESDT, Pair, Network}
 
+  def swap_tokens_fixed_input(
+        %Account{} = account,
+        %Pair{} = pair,
+        token_in,
+        value_in,
+        token_out,
+        value_out
+      ) do
+    # data = "ESDTTransfer@#{token_in}@#{amount_in}@#{swap}@#{token_out}@#{amount_out}"    
+    esdt = %ESDT{identifier: Pair.token_identifier(pair, token_in)}
+
+    ESDT.transfer(account, pair.address, esdt, value_in, [
+      "swapTokensFixedInput",
+      Pair.token_identifier(pair, token_out),
+      value_out
+    ])
+    |> Map.put(:gasLimit, 40_000_000)
+  end
+
   def accept_esdt_payment(%Account{} = account, %Pair{} = pair, token_identifier, value)
       when is_binary(token_identifier) and is_integer(value) do
     esdt = %ESDT{identifier: Pair.token_identifier(pair, token_identifier)}
@@ -29,20 +48,18 @@ defmodule Elrondex.Sc.PairSc do
     |> Map.put(:gasLimit, 100_000_000)
   end
 
-  def get_amount_in(%Account{} = account, %Pair{} = pair, token_wanted_identifier, value_wanted) do
-    esdt = %ESDT{identifier: Pair.token_identifier(pair, token_wanted_identifier)}
-    data = Sc.data_call("getAmountIn", [esdt.identifier, value_wanted])
+  def get_amount_in(%Pair{} = pair, token_wanted_identifier, amount_wanted, %Network{} = network) do
+    token_identifier = Pair.token_identifier(pair, token_wanted_identifier)
 
-    Transaction.transaction(account, pair.address, 0, data)
-    |> Map.put(:gasLimit, 100_000_000)
+    Sc.view_map_call(pair.address, "getAmountIn", [token_identifier, amount_wanted])
+    |> REST.post_vm_values_int(network)
   end
 
-  def get_amount_out(%Account{} = account, %Pair{} = pair, token_in_identifier, value_in) do
-    esdt = %ESDT{identifier: Pair.token_identifier(pair, token_in_identifier)}
-    data = Sc.data_call("getAmountOut", [esdt.identifier, value_in])
+  def get_amount_out(%Pair{} = pair, token_in_identifier, amount_in, %Network{} = network) do
+    token_identifier = Pair.token_identifier(pair, token_in_identifier)
 
-    Transaction.transaction(account, pair.address, 0, data)
-    |> Map.put(:gasLimit, 100_000_000)
+    Sc.view_map_call(pair.address, "getAmountOut", [token_identifier, amount_in])
+    |> REST.post_vm_values_int(network)
   end
 
   def get_pair(pair_address, %Network{} = network, opts \\ []) do
@@ -93,4 +110,48 @@ defmodule Elrondex.Sc.PairSc do
     Sc.view_map_call(pair_address, "getLpTokenIdentifier")
     |> REST.post_vm_values_string(network)
   end
+
+  def get_total_fee_percent(pair_address, %Network{} = network, opts \\ []) do
+    Sc.view_map_call(pair_address, "getTotalFeePercent")
+    |> REST.post_vm_values_int(network)
+  end
+
+  def get_special_fee(pair_address, %Network{} = network, opts \\ []) do
+    Sc.view_map_call(pair_address, "getSpecialFee")
+    |> REST.post_vm_values_int(network)
+  end
+
+  def get_router_managed_address(pair_address, %Network{} = network, opts \\ []) do
+    get_router_one_address("getRouterManagedAddress", pair_address, network)
+  end
+
+  def get_router_owner_managed_address(pair_address, %Network{} = network, opts \\ []) do
+    get_router_one_address("getRouterOwnerManagedAddress", pair_address, network)
+  end
+
+  defp get_router_one_address(sc_call, pair_address, %Network{} = network, opts \\ []) do
+    with {:ok, data} <-
+           Sc.view_map_call(pair_address, sc_call)
+           |> REST.post_vm_values_query(network),
+         {:ok, [sc_return]} <-
+           Sc.parse_view_sc_response(data) do
+      {:ok, sc_return |> Base.decode64!() |> Account.public_key_to_address()}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  def get_state(pair_address, %Network{} = network, opts \\ []) do
+    with {:ok, state} <-
+           Sc.view_map_call(pair_address, "getState")
+           |> REST.post_vm_values_string(network) do
+      {:ok, get_enum_state(state)}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  defp get_enum_state(<<0>>), do: :inactive
+  defp get_enum_state(<<1>>), do: :active
+  defp get_enum_state(<<2>>), do: :active_noswaps
 end

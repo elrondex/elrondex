@@ -70,7 +70,7 @@ defmodule Elrondex.Account do
   end
 
   # TODO Add account number
-  def from_mnemonic(mnemonic, passphrase \\ "") do
+  def from_mnemonic(mnemonic, passphrase \\ "", account_index \\ 0) when account_index >= 0 do
     {:ok, mnemonic_seed} =
       Mnemo.seed(mnemonic, passphrase)
       |> Base.decode16(case: :lower)
@@ -86,7 +86,7 @@ defmodule Elrondex.Account do
     master_node = {private_key, chain_code}
     # Compute final node
     # TODO [44, 508, account, 0, account_index]
-    {private_key, _} = ckd_priv(master_node, [44, 508, 0, 0, 0])
+    {private_key, _} = ckd_priv(master_node, [44, 508, 0, 0, account_index])
 
     # Compute public key
     {public_key, ^private_key} = :crypto.generate_key(:eddsa, :ed25519, private_key)

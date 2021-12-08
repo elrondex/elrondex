@@ -25,11 +25,11 @@ defmodule Elrondex.Network do
             # e.g 400
             erd_meta_consensus_group_size: nil,
             # e.g 50000
-            erd_min_gas_limit: nil,
+            erd_min_gas_limit: 50_000,
             # e.g 1_000_000_000
-            erd_min_gas_price: nil,
+            erd_min_gas_price: 1_000_000_000,
             # e.g 1
-            erd_min_transaction_version: nil,
+            erd_min_transaction_version: 1,
             # e.g 400
             erd_num_metachain_nodes: nil,
             # e.g 400

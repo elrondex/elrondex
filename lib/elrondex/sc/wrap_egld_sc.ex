@@ -1,12 +1,15 @@
 defmodule Elrondex.Sc.WrapEgldSc do
-  alias Elrondex.{Transaction, Account, REST, ESDT}
+  alias Elrondex.{Transaction, Account, REST, ESDT, Network, Sc}
 
   @doc """
   Return wrapped ESDT token id associated to native EGLD token by SC   
   """
   # We can implement this as config or cached/genserver
   def wrapped_egld_token_id() do
-    "WEGLD-073650"
+    # PROD
+    "WEGLD-bd4d79"
+    # TEST
+    # "WEGLD-7fbb90"
   end
 
   @doc """
@@ -14,7 +17,10 @@ defmodule Elrondex.Sc.WrapEgldSc do
   """
   # We can implement this as config or cached/genserver
   def wrapped_egld_address() do
-    "erd1qqqqqqqqqqqqqpgqfj3z3k4vlq7dc2928rxez0uhhlq46s6p4mtqerlxhc"
+    # PROD
+    "erd1qqqqqqqqqqqqqpgqhe8t5jewej70zupmh44jurgn29psua5l2jps3ntjj3"
+    # TEST
+    # "erd1qqqqqqqqqqqqqpgqd77fnev2sthnczp2lnfx0y5jdycynjfhzzgq6p3rax"
   end
 
   @doc """
@@ -45,6 +51,18 @@ defmodule Elrondex.Sc.WrapEgldSc do
 
     account
     |> ESDT.transfer(wrapped_egld_address(), esdt, value, ["unwrapEgld"])
-    |> Map.put(:gasLimit, 8_000_000)
+    |> Map.put(:gasLimit, 18_000_000)
+  end
+
+  def get_locked_egld_balance(wrapped_egld_address, %Network{} = network, opts \\ []) do
+    wrapped_egld_address
+    |> Sc.view_map_call("getLockedEgldBalance")
+    |> REST.post_vm_values_int(network)
+  end
+
+  def get_wrapped_egld_token_id(wrapped_egld_address, %Network{} = network, opts \\ []) do
+    wrapped_egld_address
+    |> Sc.view_map_call("getWrappedEgldTokenId")
+    |> REST.post_vm_values_string(network)
   end
 end

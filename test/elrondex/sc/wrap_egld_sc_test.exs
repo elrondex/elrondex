@@ -57,4 +57,27 @@ defmodule Elrondex.Sc.WrapEgldScTest do
              |> WrapEgldSc.unwrap_egld(value)
              |> SC.call()
   end
+
+  @tag :skip
+  test "get_locked_egld_balance test" do
+    testnet = Network.get(:testnet)
+
+    {:ok, value} =
+      WrapEgldSc.wrapped_egld_address()
+      |> WrapEgldSc.get_locked_egld_balance(testnet)
+
+    IO.inspect(value)
+  end
+
+  test "get_wrapped_egld_token_id test" do
+    testnet = Network.get(:testnet)
+
+    {:ok, value} =
+      WrapEgldSc.wrapped_egld_address()
+      |> WrapEgldSc.get_wrapped_egld_token_id(testnet)
+
+    IO.inspect(value)
+
+    assert value == WrapEgldSc.wrapped_egld_token_id()
+  end
 end

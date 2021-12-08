@@ -41,7 +41,12 @@ defmodule Elrondex.ESDT do
             # Allows the token manager to assign specific role(s). Default: ???
             # ESDTRoleLocalBurn: an address with this role can burn tokens
             # ESDTRoleLocalMint: an address with this role can mint new tokens
-            canAddSpecialRoles: nil
+            canAddSpecialRoles: nil,
+            isPaused: nil,
+            canTransferNFTCreateRole: nil,
+            nftCreateStopped: nil,
+            numDecimals: nil,
+            numWiped: nil
 
   def burn(%Account{} = account, %ESDT{} = esdt, value) when is_integer(value) do
     hex_identifier = hex_encode(esdt.identifier)
@@ -207,6 +212,12 @@ defmodule Elrondex.ESDT do
   def set_esdt_property("CanPause-false", %ESDT{} = esdt),
     do: %{esdt | canPause: false}
 
+  def set_esdt_property("IsPaused-true", %ESDT{} = esdt),
+    do: %{esdt | isPaused: true}
+
+  def set_esdt_property("IsPaused-false", %ESDT{} = esdt),
+    do: %{esdt | isPaused: false}
+
   def set_esdt_property("CanFreeze-true", %ESDT{} = esdt),
     do: %{esdt | canFreeze: true}
 
@@ -224,6 +235,28 @@ defmodule Elrondex.ESDT do
 
   def set_esdt_property("CanAddSpecialRoles-false", %ESDT{} = esdt),
     do: %{esdt | canAddSpecialRoles: false}
+
+  def set_esdt_property("CanTransferNFTCreateRole-true", %ESDT{} = esdt),
+    do: %{esdt | canTransferNFTCreateRole: true}
+
+  def set_esdt_property("CanTransferNFTCreateRole-false", %ESDT{} = esdt),
+    do: %{esdt | canTransferNFTCreateRole: false}
+
+  def set_esdt_property("NFTCreateStopped-true", %ESDT{} = esdt),
+    do: %{esdt | nftCreateStopped: true}
+
+  def set_esdt_property("NFTCreateStopped-false", %ESDT{} = esdt),
+    do: %{esdt | nftCreateStopped: false}
+
+  def set_esdt_property("NumDecimals-" <> nd, %ESDT{} = esdt) do
+    {numDecimals, ""} = Integer.parse(nd)
+    %{esdt | numDecimals: numDecimals}
+  end
+
+  def set_esdt_property("NumWiped-" <> nw, %ESDT{} = esdt) do
+    {numWiped, ""} = Integer.parse(nw)
+    %{esdt | numWiped: numWiped}
+  end
 
   def set_esdt_property(property, %ESDT{} = esdt) do
     # TODO change that to Logger

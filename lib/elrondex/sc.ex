@@ -5,7 +5,8 @@ defmodule Elrondex.Sc do
   Prepare map structure for pure SC function call
   Optional :caller and :value as options
   """
-  def view_map_call(sc_address, func_name, args \\ [], opts \\ []) do
+  def view_map_call(sc_address, func_name, args \\ [], opts \\ [])
+      when is_binary(sc_address) and is_binary(func_name) do
     %{
       "scAddress" => sc_address,
       "funcName" => func_name,

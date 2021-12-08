@@ -2,8 +2,16 @@ defmodule Elrondex.Sc.RouterSc do
   alias Elrondex.{Sc, Account, Transaction, Network, REST, ESDT, Pair}
   alias Elrondex.Sc.{PairSc}
 
+  @deprecated "Use get_all_pairs_managed_addresses/3 instead"
   def get_all_pairs_addresses(router_address, %Network{} = network, opts \\ []) do
-    sc_call = Sc.view_map_call(router_address, "getAllPairsAddresses")
+     get_all_pairs_managed_addresses(router_address, network, opts)
+  end
+
+  def get_all_pairs_managed_addresses(router_address, %Network{} = network, opts \\ []) do
+    # This is old name 
+    # sc_call = Sc.view_map_call(router_address, "getAllPairsAddresses")
+
+    sc_call = Sc.view_map_call(router_address, "getAllPairsManagedAddresses")
 
     with {:ok, data} <- REST.post_vm_values_query(sc_call, network),
          {:ok, sc_return} <-
