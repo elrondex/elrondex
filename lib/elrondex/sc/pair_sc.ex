@@ -154,4 +154,5 @@ defmodule Elrondex.Sc.PairSc do
   defp get_enum_state(<<0>>), do: :inactive
   defp get_enum_state(<<1>>), do: :active
   defp get_enum_state(<<2>>), do: :active_noswaps
+  defp get_enum_state(""), do: :unknown
 end

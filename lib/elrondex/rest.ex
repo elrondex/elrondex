@@ -105,21 +105,21 @@ defmodule Elrondex.REST do
   end
 
   def post_vm_values_query(query_map, %Network{} = network) do
-    IO.inspect(query_map)
+    # IO.inspect(query_map)
 
     Tesla.post(network.endpoint.client, "/vm-values/query", query_map)
     |> client_response(["data"])
   end
 
   def post_vm_values_string(query_map, %Network{} = network) do
-    IO.inspect(query_map)
+    # IO.inspect(query_map)
 
     Tesla.post(network.endpoint.client, "/vm-values/string", query_map)
     |> client_response(["data"])
   end
 
   def post_vm_values_int(query_map, %Network{} = network) do
-    IO.inspect(query_map)
+    # IO.inspect(query_map)
 
     Tesla.post(network.endpoint.client, "/vm-values/int", query_map)
     |> client_response(["data"])

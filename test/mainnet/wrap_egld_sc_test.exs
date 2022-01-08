@@ -3,6 +3,7 @@ defmodule Mainnet.WrapEgldScTest do
   alias Elrondex.Sc.WrapEgldSc
 
   use ExUnit.Case
+  @moduletag network: :mainnet
 
   @wegld_identifier "WEGLD-bd4d79"
 
@@ -15,7 +16,7 @@ defmodule Mainnet.WrapEgldScTest do
       wrapped_egld_address
       |> WrapEgldSc.get_wrapped_egld_token_id(mainnet)
 
-    IO.inspect(value)
+    # IO.inspect(value)
 
     assert value == @wegld_identifier
   end

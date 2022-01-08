@@ -2,6 +2,7 @@ defmodule Mainnet.EsdtWegldTest do
   alias Elrondex.{ESDT, Account, Transaction, Network, REST}
 
   use ExUnit.Case
+  @moduletag network: :mainnet
 
   @wegld_identifier "WEGLD-bd4d79"
 
@@ -11,7 +12,7 @@ defmodule Mainnet.EsdtWegldTest do
     # ESDT
     esdt = %ESDT{identifier: @wegld_identifier}
     {:ok, wegld} = ESDT.get_rest_esdt(esdt, mainnet)
-    IO.inspect(wegld)
+    # IO.inspect(wegld)
 
     assert wegld.name == "WrappedEGLD"
     assert wegld.type == "FungibleESDT"
