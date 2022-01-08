@@ -17,7 +17,9 @@ defmodule Elrondex.MixProject do
       package: package(),
       # Docs
       name: "Elrondex",
-      docs: docs()
+      docs: docs(),
+      aliases: aliases(),
+      preferred_cli_env: ["mainnet": :test]
     ]
   end
 
@@ -61,6 +63,12 @@ defmodule Elrondex.MixProject do
       main: "Elrondex",
       canonical: "http://hexdocs.pm/elrondex",
       source_url: @source_url
+    ]
+  end
+
+  defp aliases do
+    [
+      mainnet: ["test --only network:mainnet"]
     ]
   end
 end
