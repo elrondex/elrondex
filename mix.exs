@@ -19,7 +19,7 @@ defmodule Elrondex.MixProject do
       name: "Elrondex",
       docs: docs(),
       aliases: aliases(),
-      preferred_cli_env: ["mainnet": :test]
+      preferred_cli_env: [mainnet: :test]
     ]
   end
 
