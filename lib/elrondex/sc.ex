@@ -48,7 +48,7 @@ defmodule Elrondex.Sc do
     do: "0" <> value
 
   def parse_view_sc_response(%{"returnCode" => "ok", "returnData" => return_data} = response) do
-    IO.inspect(response)
+    # IO.inspect(response)
     {:ok, return_data}
   end
 
@@ -58,7 +58,7 @@ defmodule Elrondex.Sc do
   end
 
   def parse_view_sc_response(response) do
-    IO.inspect(response)
+    # IO.inspect(response)
     {:error, response}
   end
 end
