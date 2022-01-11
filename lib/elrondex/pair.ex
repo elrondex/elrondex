@@ -4,7 +4,9 @@ defmodule Elrondex.Pair do
   defstruct name: nil,
             address: nil,
             first_token: nil,
-            second_token: nil
+            first_decimals: nil,
+            second_token: nil,
+            second_decimals: nil
 
   def get_egldbusd_pair do
     %Pair{

@@ -14,6 +14,8 @@ defmodule Mainnet.PairEgldUsdcTest do
     {:ok, pair} = PairSc.get_pair(@pair_egldusdc_address, mainnet)
     # IO.inspect(pair)
     assert pair.first_token == @wegld_identifier
+    assert pair.first_decimals == 18
     assert pair.second_token == @usdc_identifier
+    assert pair.second_decimals == 6
   end
 end

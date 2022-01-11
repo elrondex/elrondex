@@ -14,7 +14,9 @@ defmodule Mainnet.PairEgldMexTest do
     {:ok, pair} = PairSc.get_pair(@pair_egldmex_address, mainnet)
     # IO.inspect(pair)
     assert pair.first_token == @wegld_identifier
+    assert pair.first_decimals == 18
     assert pair.second_token == @mex_identifier
+    assert pair.second_decimals == 18
   end
 
   test "get_reserve WEGLD" do

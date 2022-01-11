@@ -82,12 +82,16 @@ defmodule Elrondex.Sc.PairSc do
 
   def get_pair(pair_address, %Network{} = network, opts \\ []) do
     with {:ok, first_token} <- get_first_token_id(pair_address, network, opts),
-         {:ok, second_token} <- get_second_token_id(pair_address, network, opts) do
+         {:ok, first_esdt} <- ESDT.get_rest_esdt(%ESDT{identifier: first_token}, network),
+         {:ok, second_token} <- get_second_token_id(pair_address, network, opts),
+         {:ok, second_esdt} <- ESDT.get_rest_esdt(%ESDT{identifier: second_token}, network) do
       {:ok,
        %Pair{
          address: pair_address,
          first_token: first_token,
-         second_token: second_token
+         first_decimals: first_esdt.numDecimals,
+         second_token: second_token,
+         second_decimals: second_esdt.numDecimals
        }}
     else
       {:error, reason} -> {:error, reason}
