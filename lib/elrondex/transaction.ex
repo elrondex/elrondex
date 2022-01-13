@@ -24,11 +24,11 @@ defmodule Elrondex.Transaction do
             value: nil,
             # receiver signature field 3/9
             receiver: nil,
-            # sender signature field 4/9           
+            # sender signature field 4/9
             sender: nil,
-            # gasPrice signature field 5/9, loaded from Network.erd_min_gas_price            
+            # gasPrice signature field 5/9, loaded from Network.erd_min_gas_price
             gasPrice: nil,
-            # gasLimit signature field 6/9, loaded from Network.erd_min_gas_limit            
+            # gasLimit signature field 6/9, loaded from Network.erd_min_gas_limit
             gasLimit: nil,
             # data signature field 7/9
             data: nil,
@@ -38,7 +38,11 @@ defmodule Elrondex.Transaction do
             version: nil,
             # Computed signature based on 1-9 signature fields
             signature: nil
-
+  @doc """
+  Defines a data structure for account details.
+  Its arguments are load from account
+  Eg transaction(account, reciver,value,data) or transaction(account)
+  """
   def transaction(%Account{} = account, receiver, value, data \\ nil) do
     %Transaction{
       account: account,
@@ -66,7 +70,10 @@ defmodule Elrondex.Transaction do
 
     Enum.reduce([:signature | @sign_fields], %{}, fn f, acc -> Map.put(acc, f, Map.get(tr, f)) end)
   end
-
+  @doc """
+  Signs a transaction to be done.
+  Its argument it's the transaction itself, then it calls data_to_sign(), signs and encrypts the result.
+  """
   def sign(%Transaction{} = tr) do
     signature =
       tr
