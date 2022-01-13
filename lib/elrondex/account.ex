@@ -33,6 +33,11 @@ defmodule Elrondex.Account do
     from_private_key(private_key)
   end
 # Generates an adress using their its private key (using binary private key)
+  @doc """
+  Constructs a bech adress using its private key.
+  Function argument should be a private key (in binary or a hex format)
+  It also stores the generated values into 'Account' class
+  """
   def from_private_key(private_key)
       when is_binary(private_key) and byte_size(private_key) == 32 do
     # Compute public key
@@ -47,13 +52,16 @@ defmodule Elrondex.Account do
       public_key: public_key
     }
   end
-# Generates an adress using their its private key (using hex private key)
   def from_private_key(hex_private_key)
       when is_binary(hex_private_key) and byte_size(hex_private_key) == 64 do
     {:ok, private_key} = Base.decode16(hex_private_key, case: :mixed)
     from_private_key(private_key)
   end
-
+  @doc """
+  Constructs a bech adress using its public key.
+  Function argument should be a public key (in binary or a hex format)
+  It also stores the generated values into 'Account' class
+  """
   def from_public_key(public_key)
       when is_binary(public_key) and byte_size(public_key) == 32 do
     # Compute bech32 address
@@ -70,13 +78,20 @@ defmodule Elrondex.Account do
     {:ok, public_key} = Base.decode16(hex_public_key, case: :mixed)
     from_public_key(public_key)
   end
-
+   @doc """
+  Constructs a bech adress using its adress.
+  Function argument should be an adress (in binary or a hex format)
+  """
   def from_address(address) do
     {:ok, "erd", public_key} = Bech32.decode(address)
     from_public_key(public_key)
   end
 
   # TODO Add account number
+    @doc """
+  Constructs a bech adress using its mnemonic.
+  Function argument should be a wallet's mnemonic
+  """
   def from_mnemonic(mnemonic, passphrase \\ "", account_index \\ 0) when account_index >= 0 do
     {:ok, mnemonic_seed} =
       Mnemo.seed(mnemonic, passphrase)
