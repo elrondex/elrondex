@@ -7,6 +7,10 @@ defmodule Elrondex.Account do
             public_key: nil,
             private_key: nil
 
+  @doc """
+  Constructs a bech adress using its public key.
+  Function argument should be a public key (in binary or a hex format)
+  """
   def public_key_to_address(public_key)
       when is_binary(public_key) and byte_size(public_key) == 32 do
     # Compute bech32 address
@@ -18,14 +22,17 @@ defmodule Elrondex.Account do
     Base.decode16!(hex_public_key, case: :mixed)
     |> public_key_to_address()
   end
-
+  @doc """
+  Constructs a bech adress using a random generated private key.
+  It has no arguments.
+  """
   def generate_random() do
     # Compute private_key
     {_, private_key} = :crypto.generate_key(:eddsa, :ed25519)
 
     from_private_key(private_key)
   end
-
+# Generates an adress using their its private key (using binary private key)
   def from_private_key(private_key)
       when is_binary(private_key) and byte_size(private_key) == 32 do
     # Compute public key
@@ -40,7 +47,7 @@ defmodule Elrondex.Account do
       public_key: public_key
     }
   end
-
+# Generates an adress using their its private key (using hex private key)
   def from_private_key(hex_private_key)
       when is_binary(hex_private_key) and byte_size(hex_private_key) == 64 do
     {:ok, private_key} = Base.decode16(hex_private_key, case: :mixed)
