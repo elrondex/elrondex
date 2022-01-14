@@ -38,6 +38,7 @@ defmodule Elrondex.Transaction do
             version: nil,
             # Computed signature based on 1-9 signature fields
             signature: nil
+
   def transaction(%Account{} = account, receiver, value, data \\ nil) do
     %Transaction{
       account: account,
@@ -65,6 +66,7 @@ defmodule Elrondex.Transaction do
 
     Enum.reduce([:signature | @sign_fields], %{}, fn f, acc -> Map.put(acc, f, Map.get(tr, f)) end)
   end
+
   def sign(%Transaction{} = tr) do
     signature =
       tr
@@ -74,6 +76,7 @@ defmodule Elrondex.Transaction do
 
     %{tr | signature: signature}
   end
+
   def sign_verify(%Transaction{} = tr, %Account{} = account) do
     data_to_sign(tr)
     |> Account.sign_verify(tr.signature, account)
