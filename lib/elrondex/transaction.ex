@@ -38,11 +38,6 @@ defmodule Elrondex.Transaction do
             version: nil,
             # Computed signature based on 1-9 signature fields
             signature: nil
-  @doc """
-  Defines a data structure for account details.
-  Its arguments are load from account
-  Eg transaction(account, reciver,value,data) or transaction(account)
-  """
   def transaction(%Account{} = account, receiver, value, data \\ nil) do
     %Transaction{
       account: account,
@@ -70,10 +65,6 @@ defmodule Elrondex.Transaction do
 
     Enum.reduce([:signature | @sign_fields], %{}, fn f, acc -> Map.put(acc, f, Map.get(tr, f)) end)
   end
-  @doc """
-  Signs a transaction to be done.
-  Its argument it's the transaction itself, then it calls data_to_sign(), signs and encrypts the result.
-  """
   def sign(%Transaction{} = tr) do
     signature =
       tr
@@ -83,7 +74,6 @@ defmodule Elrondex.Transaction do
 
     %{tr | signature: signature}
   end
-
   def sign_verify(%Transaction{} = tr, %Account{} = account) do
     data_to_sign(tr)
     |> Account.sign_verify(tr.signature, account)
