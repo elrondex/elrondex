@@ -2,7 +2,7 @@ defmodule Elrondex.Sc.WrapEgldSc do
   alias Elrondex.{Transaction, Account, REST, ESDT, Network, Sc}
 
   @doc """
-  Return wrapped ESDT token id associated to native EGLD token by SC   
+  Return wrapped ESDT token id associated to native EGLD token by SC
   """
   # We can implement this as config or cached/genserver
   def wrapped_egld_token_id() do
@@ -13,7 +13,7 @@ defmodule Elrondex.Sc.WrapEgldSc do
   end
 
   @doc """
-  Return wrapped ESDT token id    
+  Return wrapped ESDT token id
   """
   # We can implement this as config or cached/genserver
   def wrapped_egld_address() do
@@ -24,11 +24,11 @@ defmodule Elrondex.Sc.WrapEgldSc do
   end
 
   @doc """
-  Return transaction associated with the account that 
+  Return transaction associated with the account that
   wrap native EGLD token to wrapped ESDT token by calling CS
 
-  In order to be ready for blockchain transaction need to be 
-  prepared and signed 
+  In order to be ready for blockchain transaction need to be
+  prepared and signed
   """
   def wrap_egld(%Account{} = account, value) when is_integer(value) do
     account
@@ -37,14 +37,14 @@ defmodule Elrondex.Sc.WrapEgldSc do
   end
 
   @doc """
-  Return transaction associated with the account that 
+  Return transaction associated with the account that
   swap wrapped ESDT token to native EGLD token by calling CS
 
-  Transaction is simple ESDT token transfer from account to SC with 
+  Transaction is simple ESDT token transfer from account to SC with
   aditional argument `unwrapEgld`
 
-  In order to be ready for blockchain transaction need to be 
-  prepared and signed 
+  In order to be ready for blockchain transaction need to be
+  prepared and signed
   """
   def unwrap_egld(%Account{} = account, value) when is_integer(value) do
     esdt = %ESDT{identifier: wrapped_egld_token_id()}

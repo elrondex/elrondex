@@ -24,11 +24,11 @@ defmodule Elrondex.Transaction do
             value: nil,
             # receiver signature field 3/9
             receiver: nil,
-            # sender signature field 4/9           
+            # sender signature field 4/9
             sender: nil,
-            # gasPrice signature field 5/9, loaded from Network.erd_min_gas_price            
+            # gasPrice signature field 5/9, loaded from Network.erd_min_gas_price
             gasPrice: nil,
-            # gasLimit signature field 6/9, loaded from Network.erd_min_gas_limit            
+            # gasLimit signature field 6/9, loaded from Network.erd_min_gas_limit
             gasLimit: nil,
             # data signature field 7/9
             data: nil,

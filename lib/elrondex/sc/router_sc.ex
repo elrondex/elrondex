@@ -4,7 +4,7 @@ defmodule Elrondex.Sc.RouterSc do
 
   @deprecated "Use get_all_pairs_managed_addresses/3 instead"
   def get_all_pairs_addresses(router_address, %Network{} = network, opts \\ []) do
-     get_all_pairs_managed_addresses(router_address, network, opts)
+    get_all_pairs_managed_addresses(router_address, network, opts)
   end
 
   def get_all_pairs_managed_addresses(router_address, %Network{} = network, opts \\ []) do

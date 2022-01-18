@@ -131,6 +131,7 @@ defmodule Elrondex.Struct do
     case String.downcase(value) do
       "true" ->
         struct_set_boolean(struct, key, true, require, since_match, default)
+
       "false" ->
         struct_set_boolean(struct, key, false, require, since_match, default)
 
@@ -170,7 +171,7 @@ defmodule Elrondex.Struct do
   end
 
   def struct_set_decimal(struct, key, nil, @require_no, _since_match, default)
-      when  Decimal.is_decimal(default) or default == nil do
+      when Decimal.is_decimal(default) or default == nil do
     Map.put(struct, key, default)
   end
 

@@ -7,6 +7,17 @@ defmodule Elrondex.Account do
             public_key: nil,
             private_key: nil
 
+  @doc """
+  Returns an account's address from the public key
+
+  ## Arguments
+    * `public_key` - a public key (in binary or in hex format)
+
+  ## Examples
+    iex(2)> Elrondex.Test.Bob.account().public_key()
+    |> Elrondex.Account.public_key_to_address
+    "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
+  """
   def public_key_to_address(public_key)
       when is_binary(public_key) and byte_size(public_key) == 32 do
     # Compute bech32 address
@@ -19,6 +30,14 @@ defmodule Elrondex.Account do
     |> public_key_to_address()
   end
 
+  @doc """
+  Generates a random account.
+
+  ## Examples
+    iex(2)> Elrondex.Account.generate_random().address
+    |> String.slice(0, 3)
+    "erd"
+  """
   def generate_random() do
     # Compute private_key
     {_, private_key} = :crypto.generate_key(:eddsa, :ed25519)
@@ -26,6 +45,18 @@ defmodule Elrondex.Account do
     from_private_key(private_key)
   end
 
+  @doc """
+  Generates an account based on a specific private key.
+
+  ## Arguments
+    * `private_key` - a private key (in binary or in hex format)
+
+  ## Examples
+    iex(3)> Elrondex.Test.Bob.private_key()
+    |> Elrondex.Account.from_private_key()
+    |> Map.get(:address) |> String.slice(0, 3)
+    "erd"
+  """
   def from_private_key(private_key)
       when is_binary(private_key) and byte_size(private_key) == 32 do
     # Compute public key
@@ -47,6 +78,19 @@ defmodule Elrondex.Account do
     from_private_key(private_key)
   end
 
+  @doc """
+  Generates an account based on a specific public key.
+
+  ## Arguments
+   * `public_key` - a public key (in binary or in hex format)
+
+  ## Examples
+    iex(2)> Elrondex.Test.Bob.public_key()
+    |>Elrondex.Account.from_public_key()
+    |>Map.get(:address) |> String.slice(0,3)
+    "erd"
+
+  """
   def from_public_key(public_key)
       when is_binary(public_key) and byte_size(public_key) == 32 do
     # Compute bech32 address
@@ -64,12 +108,40 @@ defmodule Elrondex.Account do
     from_public_key(public_key)
   end
 
+   @doc """
+  Generates an account's details(public key and address) based on a specific address.
+
+  ## Arguments
+   * `address` - a wallet's address
+
+  ## Examples
+    iex(2)> Elrondex.Test.Bob.address
+    |> Elrondex.Account.from_address
+    |> Map.get(:public_key)
+  <<203, 118, 219, 103, 28, 45, 57, 174, 200, 185, 187, 95, 244, 197, 165, 240,
+  28, 122, 88, 250, 13, 128, 6, 242, 143, 81, 69, 130, 54, 31, 71, 129>>
+  """
   def from_address(address) do
     {:ok, "erd", public_key} = Bech32.decode(address)
     from_public_key(public_key)
   end
 
   # TODO Add account number
+
+   @doc """
+  Returns an account's address from the mnemonic
+
+  ## Arguments
+   * `mnemonic` - a wallet's mnemonic
+
+  ## Examples
+    iex(2)> Elrondex.Test.Bob.mnemonic
+    |> Elrondex.Account.from_mnemonic
+    |> Map.get(:address)
+    |> String.slice(0,3)
+    "erd"
+
+  """
   def from_mnemonic(mnemonic, passphrase \\ "", account_index \\ 0) when account_index >= 0 do
     {:ok, mnemonic_seed} =
       Mnemo.seed(mnemonic, passphrase)
@@ -130,11 +202,25 @@ defmodule Elrondex.Account do
   def hex_private_key(%Account{} = account) do
     Base.encode16(account.private_key, case: :lower)
   end
-
+ @doc """
+  Signs a transaction
+  ## Arguments
+   * `data_to_sign` - a transaction's address to be signed
+   * `account` - the account that made the transaction
+  """
   def sign(data_to_sign, %Account{} = account) do
     :crypto.sign(:eddsa, :sha256, data_to_sign, [account.private_key, :ed25519])
   end
+   @doc """
+  Verifies the signature of a transaction
+  ## Arguments
+   * `data_to_sign` - a transaction's address to be signed
+   * `signature` - the transaction's signature
+   * `account` - the account that made the transaction
 
+  ## Examples
+  TODO
+  """
   def sign_verify(data_to_sign, signature, %Account{} = account)
       when is_binary(data_to_sign) and is_binary(signature) and byte_size(signature) == 64 do
     :crypto.verify(:eddsa, :sha256, data_to_sign, signature, [account.public_key, :ed25519])
