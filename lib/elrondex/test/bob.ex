@@ -15,4 +15,7 @@ defmodule Elrondex.Test.Bob do
   def public_key do
     account().public_key
   end
+  def address do
+    account().address
+  end
 end

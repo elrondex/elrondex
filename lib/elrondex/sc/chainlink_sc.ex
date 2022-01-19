@@ -2,7 +2,7 @@ defmodule Elrondex.Sc.ChainlinkSc do
   alias Elrondex.{Sc, Transaction, Account, REST, ESDT}
 
   @doc """
-  Return Chainlink SC address 
+  Return Chainlink SC address
   """
   # We can implement this as config or cached/genserver
   # TODO Why we have one contract per shard ?
@@ -11,11 +11,11 @@ defmodule Elrondex.Sc.ChainlinkSc do
   end
 
   @doc """
-  Return transaction associated with the account that 
-  call Chainlink SC for latest price feed asociated to 
+  Return transaction associated with the account that
+  call Chainlink SC for latest price feed asociated to
   asset1/asset2
 
-  In order to be ready for blockchain transaction need to be 
+  In order to be ready for blockchain transaction need to be
   prepared and signed
   """
   def latest_price_feed(%Account{} = account, asset1, asset2) do
@@ -27,11 +27,11 @@ defmodule Elrondex.Sc.ChainlinkSc do
   end
 
   @doc """
-  Return transaction associated with the account that 
-  call Chainlink SC to get all the price feeds for 
+  Return transaction associated with the account that
+  call Chainlink SC to get all the price feeds for
   all the available assets
 
-  In order to be ready for blockchain transaction need to be 
+  In order to be ready for blockchain transaction need to be
   prepared and signed
   """
   def latest_round_data(%Account{} = account) do
