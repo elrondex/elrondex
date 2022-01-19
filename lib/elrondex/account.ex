@@ -54,8 +54,8 @@ defmodule Elrondex.Account do
   ## Examples
     iex(3)> Elrondex.Test.Bob.private_key()
     |> Elrondex.Account.from_private_key()
-    |> Map.get(:address) |> String.slice(0, 3)
-    "erd"
+    |> Map.get(:address)
+    "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def from_private_key(private_key)
       when is_binary(private_key) and byte_size(private_key) == 32 do
@@ -87,8 +87,8 @@ defmodule Elrondex.Account do
   ## Examples
     iex(2)> Elrondex.Test.Bob.public_key()
     |>Elrondex.Account.from_public_key()
-    |>Map.get(:address) |> String.slice(0,3)
-    "erd"
+    |>Map.get(:address)
+    "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
 
   """
   def from_public_key(public_key)
@@ -109,7 +109,7 @@ defmodule Elrondex.Account do
   end
 
    @doc """
-  Generates an account's details(public key and address) based on a specific address.
+  Generates an account's based on a specific address .
 
   ## Arguments
    * `address` - a wallet's address
@@ -129,18 +129,16 @@ defmodule Elrondex.Account do
   # TODO Add account number
 
    @doc """
-  Returns an account's address from the mnemonic
+  Returns an account from the mnemonic
 
   ## Arguments
    * `mnemonic` - a wallet's mnemonic
 
   ## Examples
-    iex(2)> Elrondex.Test.Bob.mnemonic
+    iex(1)> Elrondex.Test.Bob.mnemonic
     |> Elrondex.Account.from_mnemonic
     |> Map.get(:address)
-    |> String.slice(0,3)
-    "erd"
-
+    "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def from_mnemonic(mnemonic, passphrase \\ "", account_index \\ 0) when account_index >= 0 do
     {:ok, mnemonic_seed} =
@@ -195,18 +193,37 @@ defmodule Elrondex.Account do
     ckd_priv({derived_key, child_chain}, t)
   end
 
+@doc """
+  Converts an account's public key to hex format
+  ## Arguments
+   * `account` - the account that uses the key
+  ## Examples
+  iex(1)> Elrondex.Test.Bob.public_key()
+  |> Elrondex.Account.from_public_key()
+  |> Elrondex.Account.hex_public_key
+  "cb76db671c2d39aec8b9bb5ff4c5a5f01c7a58fa0d8006f28f514582361f4781"
+  """
   def hex_public_key(%Account{} = account) do
     Base.encode16(account.public_key, case: :lower)
   end
-
+@doc """
+  Converts an account's private key to hex format
+  ## Arguments
+   * `account` - the account that uses the key
+  ## Examples
+  iex(2)> Elrondex.Test.Bob.private_key()
+  |> Elrondex.Account.from_private_key()
+  |> Elrondex.Account.hex_private_key
+  "5d251c79a032263f4af11acd06d6d5d92646b408a256a282155b8363e2f168bf"
+  """
   def hex_private_key(%Account{} = account) do
     Base.encode16(account.private_key, case: :lower)
   end
  @doc """
   Signs a transaction
   ## Arguments
-   * `data_to_sign` - a transaction's address to be signed
-   * `account` - the account that made the transaction
+   * `data_to_sign` - data to sign
+   * `account` - the account that signs
   """
   def sign(data_to_sign, %Account{} = account) do
     :crypto.sign(:eddsa, :sha256, data_to_sign, [account.private_key, :ed25519])
@@ -214,11 +231,9 @@ defmodule Elrondex.Account do
    @doc """
   Verifies the signature of a transaction
   ## Arguments
-   * `data_to_sign` - a transaction's address to be signed
-   * `signature` - the transaction's signature
-   * `account` - the account that made the transaction
-
-  ## Examples
+   * `data_to_sign` - data to sign
+   * `signature` - the signature
+   * `account` - the account that signs
   TODO
   """
   def sign_verify(data_to_sign, signature, %Account{} = account)
