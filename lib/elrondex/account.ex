@@ -228,13 +228,12 @@ defmodule Elrondex.Account do
   def sign(data_to_sign, %Account{} = account) do
     :crypto.sign(:eddsa, :sha256, data_to_sign, [account.private_key, :ed25519])
   end
-   @doc """
+  @doc """
   Verifies the signature of a transaction
   ## Arguments
    * `data_to_sign` - data to sign
    * `signature` - the signature
-   * `account` - the account that signs
-  TODO
+   * `account` - the account that signed
   """
   def sign_verify(data_to_sign, signature, %Account{} = account)
       when is_binary(data_to_sign) and is_binary(signature) and byte_size(signature) == 64 do
