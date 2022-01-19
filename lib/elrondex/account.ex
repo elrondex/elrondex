@@ -14,9 +14,9 @@ defmodule Elrondex.Account do
     * `public_key` - a public key (in binary or in hex format)
 
   ## Examples
-    iex(2)> Elrondex.Test.Bob.account().public_key()
-    |> Elrondex.Account.public_key_to_address
-    "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
+      iex> Elrondex.Test.Bob.account().public_key()
+      ...> |> Elrondex.Account.public_key_to_address
+      "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def public_key_to_address(public_key)
       when is_binary(public_key) and byte_size(public_key) == 32 do
@@ -34,9 +34,9 @@ defmodule Elrondex.Account do
   Generates a random account.
 
   ## Examples
-    iex(2)> Elrondex.Account.generate_random().address
-    |> String.slice(0, 3)
-    "erd"
+      iex> Elrondex.Account.generate_random().address
+      ...> |> String.slice(0, 3)
+      "erd"
   """
   def generate_random() do
     # Compute private_key
@@ -52,10 +52,11 @@ defmodule Elrondex.Account do
     * `private_key` - a private key (in binary or in hex format)
 
   ## Examples
-    iex(3)> Elrondex.Test.Bob.private_key()
-    |> Elrondex.Account.from_private_key()
-    |> Map.get(:address) |> String.slice(0, 3)
-    "erd"
+
+      iex> Elrondex.Test.Bob.private_key()
+      ...> |> Elrondex.Account.from_private_key()
+      ...> |> Map.get(:address) |> String.slice(0, 3)
+      "erd"
   """
   def from_private_key(private_key)
       when is_binary(private_key) and byte_size(private_key) == 32 do
@@ -85,10 +86,10 @@ defmodule Elrondex.Account do
    * `public_key` - a public key (in binary or in hex format)
 
   ## Examples
-    iex(2)> Elrondex.Test.Bob.public_key()
-    |>Elrondex.Account.from_public_key()
-    |>Map.get(:address) |> String.slice(0,3)
-    "erd"
+      iex> Elrondex.Test.Bob.public_key()
+      ...> |>Elrondex.Account.from_public_key()
+      ...> |>Map.get(:address) |> String.slice(0,3)
+      "erd"
 
   """
   def from_public_key(public_key)
@@ -115,11 +116,11 @@ defmodule Elrondex.Account do
    * `address` - a wallet's address
 
   ## Examples
-    iex(2)> Elrondex.Test.Bob.address
-    |> Elrondex.Account.from_address
-    |> Map.get(:public_key)
-  <<203, 118, 219, 103, 28, 45, 57, 174, 200, 185, 187, 95, 244, 197, 165, 240,
-  28, 122, 88, 250, 13, 128, 6, 242, 143, 81, 69, 130, 54, 31, 71, 129>>
+      iex> Elrondex.Test.Bob.account().address
+      ...> |> Elrondex.Account.from_address
+      ...> |> Map.get(:public_key)
+      <<203, 118, 219, 103, 28, 45, 57, 174, 200, 185, 187, 95, 244, 197, 165, 240,
+      28, 122, 88, 250, 13, 128, 6, 242, 143, 81, 69, 130, 54, 31, 71, 129>>
   """
   def from_address(address) do
     {:ok, "erd", public_key} = Bech32.decode(address)
@@ -135,11 +136,12 @@ defmodule Elrondex.Account do
    * `mnemonic` - a wallet's mnemonic
 
   ## Examples
-    iex(2)> Elrondex.Test.Bob.mnemonic
-    |> Elrondex.Account.from_mnemonic
-    |> Map.get(:address)
-    |> String.slice(0,3)
-    "erd"
+
+      iex> Elrondex.Test.Bob.mnemonic()
+      ...> |> Elrondex.Account.from_mnemonic()
+      ...> |> Map.get(:address)
+      ...> |> String.slice(0,3)
+      "erd"
 
   """
   def from_mnemonic(mnemonic, passphrase \\ "", account_index \\ 0) when account_index >= 0 do

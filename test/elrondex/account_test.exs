@@ -2,6 +2,7 @@ defmodule Elrondex.AccountTest do
   alias Elrondex.{Account, Transaction, Network, REST}
 
   use ExUnit.Case
+  doctest Elrondex.Account
 
   @mnemonic "worry swing expect okay gym ridge check sniff civil scissors planet brain snack rookie walnut dove tuna city train embark plunge odor metal next"
 
