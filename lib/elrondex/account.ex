@@ -135,8 +135,6 @@ defmodule Elrondex.Account do
       ...> |> Elrondex.Account.from_mnemonic()
       ...> |> Map.get(:address)
       ...> "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
-
-
   """
   def from_mnemonic(mnemonic, passphrase \\ "", account_index \\ 0) when account_index >= 0 do
     {:ok, mnemonic_seed} =
