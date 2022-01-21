@@ -39,6 +39,15 @@ defmodule Elrondex.Transaction do
             # Computed signature based on 1-9 signature fields
             signature: nil
 
+  @doc """
+  Prepares a transaction
+
+  ## Arguments
+   * `account` - the account that makes the transaction
+   * `reciver` - the reciver
+   * `value` - value of transaction (hex)
+   * `data` - the data of transaction
+  """
   def transaction(%Account{} = account, receiver, value, data \\ nil) do
     %Transaction{
       account: account,
@@ -66,7 +75,18 @@ defmodule Elrondex.Transaction do
 
     Enum.reduce([:signature | @sign_fields], %{}, fn f, acc -> Map.put(acc, f, Map.get(tr, f)) end)
   end
+@doc """
+  Signs a transaction
 
+  ## Arguments
+   * `Transaction` - the transaction to be signed
+
+  ## Examples
+      iex> Elrondex.Test.Bob.transaction
+      ...> |>Elrondex.Transaction.sign() |> Map.get(:signature)
+      "7d6ba24b7f23f8c1b98003013e111b039673eb5e7c76b309af66d3b12e2a15f1ac1069d0a10b2110fb65b4963f7f9a3d63b40bb2a95e5aeabeccb7173028d606"
+
+  """
   def sign(%Transaction{} = tr) do
     signature =
       tr
@@ -77,6 +97,19 @@ defmodule Elrondex.Transaction do
     %{tr | signature: signature}
   end
 
+  @doc """
+  Verifies the signature of a transaction
+
+  ## Arguments
+   * `Transaction` - the signed transaction
+   * 'Account' - the account that made the transaction
+
+  ## Examples
+      iex> Elrondex.Test.Bob.transaction
+      ...> |> Elrondex.Transaction.sign
+      ...> |> Elrondex.Transaction.sign_verify
+      true
+  """
   def sign_verify(%Transaction{} = tr, %Account{} = account) do
     data_to_sign(tr)
     |> Account.sign_verify(tr.signature, account)
