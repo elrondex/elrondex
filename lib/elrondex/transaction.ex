@@ -119,6 +119,18 @@ defmodule Elrondex.Transaction do
     sign_verify(tr, Account.from_address(tr.sender))
   end
 
+   @doc """
+  Prepares a transaction to be done on certain network
+  ## Arguments
+   * `Transaction` - the transaction details
+   * 'network' - the network used for that transaction
+
+  ## Examples
+      iex> Elrondex.Test.Bob.transaction
+      ...> |> Elrondex.Transaction.sign
+      ...> |> Elrondex.Transaction.sign_verify
+      true
+  """
   def prepare(%Transaction{} = tr, network) do
     tr = %{
       tr
