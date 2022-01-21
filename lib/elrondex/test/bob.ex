@@ -1,7 +1,9 @@
 defmodule Elrondex.Test.Bob do
-  alias Elrondex.{Account}
+  alias Elrondex.{Account, Transaction}
 
   @mnemonic ["flower" | List.duplicate("pizza", 23)]
+  @reciver [11| List.duplicate("11", 12)]
+  @value 1_000_000_000
 
   def account do
     Account.from_mnemonic(@mnemonic)
@@ -17,5 +19,14 @@ defmodule Elrondex.Test.Bob do
   end
   def address do
     account().address
+  end
+  def transaction do
+    %Transaction{
+      account: account(),
+      sender: address(),
+      receiver: @reciver,
+      value: @value,
+      data: nil
+    }
   end
 end
