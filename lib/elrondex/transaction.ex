@@ -40,13 +40,13 @@ defmodule Elrondex.Transaction do
             signature: nil
 
   @doc """
-  Prepares a transaction
+  Creates a new transaction
 
   ## Arguments
-   * `account` - the account that makes the transaction
-   * `reciver` - the reciver
-   * `value` - value of transaction (hex)
-   * `data` - the data of transaction
+   * `account` - the account that signs the transaction, called 'sender'.
+   * `receiver` - the receiver who receives native EGLD amount sent by sender.
+   * `value` - the native EGLD amount sent from sender to receiver.
+   * `data` - the data associated to the transaction.
   """
   def transaction(%Account{} = account, receiver, value, data \\ nil) do
     %Transaction{
@@ -79,7 +79,7 @@ defmodule Elrondex.Transaction do
   Signs a transaction
 
   ## Arguments
-   * `Transaction` - the transaction to be signed
+   * `tr` - the transaction to be signed.
 
   ## Examples
       iex> Elrondex.Test.Bob.transaction
@@ -98,11 +98,11 @@ defmodule Elrondex.Transaction do
   end
 
   @doc """
-  Verifies the signature of a transaction
+  Verifies the signature of a transaction.
 
   ## Arguments
-   * `Transaction` - the signed transaction
-   * 'Account' - the account that made the transaction
+   * `tr` - the signed transaction
+   * 'Account' - the account that signs the transaction
 
   ## Examples
       iex> Elrondex.Test.Bob.transaction
