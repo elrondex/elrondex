@@ -20,4 +20,7 @@ defmodule Elrondex.Test.Bob do
   def address do
     account().address
   end
+  def send_1_egld_to_alice do
+    Transaction.transaction(account(), Alice.account(),1_000_000_000_000_000_000)
+  end
 end
