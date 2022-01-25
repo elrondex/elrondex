@@ -4,7 +4,6 @@ defmodule Alice do
   @mnemonic ["flower" | List.duplicate("pizza", 23)]
 
   def alice_account do
-      #test
   end
 
 end
