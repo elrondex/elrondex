@@ -146,7 +146,7 @@ defmodule Elrondex.Transaction do
   end
 
   # def prepare(%Transaction{} = tr, sender_state) when is_map(sender_state) do
-  # end
+  # end end
 
   def prepare_nonce(%Transaction{} = tr, nonce) when is_integer(nonce) do
     {:ok, %{tr | nonce: nonce}}
