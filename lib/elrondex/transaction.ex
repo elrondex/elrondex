@@ -82,10 +82,10 @@ defmodule Elrondex.Transaction do
    * `tr` - the transaction to be signed.
 
   ## Examples
-      iex> Elrondex.Test.Bob.transaction
-      ...> |>Elrondex.Transaction.sign() |> Map.get(:signature)
-      "7d6ba24b7f23f8c1b98003013e111b039673eb5e7c76b309af66d3b12e2a15f1ac1069d0a10b2110fb65b4963f7f9a3d63b40bb2a95e5aeabeccb7173028d606"
-
+      iex> Elrondex.Test.Alice.transaction()
+      ...> |> Elrondex.Transaction.sign()
+      ...> |> Map.get(:signature)
+      "b690d400c48e07c2bd7aff2e06084bdfd8cb494a30d2ec39122bdd683c6b0a7bb42923563e7b69de519f094790c80e2f6ce3137f940c91daccd40902fc97cf03"
   """
   def sign(%Transaction{} = tr) do
     signature =
@@ -105,9 +105,9 @@ defmodule Elrondex.Transaction do
    * 'Account' - the account that signs the transaction
 
   ## Examples
-      iex> Elrondex.Test.Bob.transaction
-      ...> |> Elrondex.Transaction.sign
-      ...> |> Elrondex.Transaction.sign_verify
+      iex> Elrondex.Test.Alice.transaction()
+      ...> |> Elrondex.Transaction.sign()
+      ...> |> Elrondex.Transaction.sign_verify()
       true
   """
   def sign_verify(%Transaction{} = tr, %Account{} = account) do
@@ -124,12 +124,6 @@ defmodule Elrondex.Transaction do
   ## Arguments
    * `Transaction` - the transaction details
    * 'network' - the network used for that transaction
-
-  ## Examples
-      iex> Elrondex.Test.Bob.transaction
-      ...> |> Elrondex.Transaction.sign
-      ...> |> Elrondex.Transaction.sign_verify
-      true
   """
   def prepare(%Transaction{} = tr, network) do
     tr = %{
@@ -163,6 +157,13 @@ defmodule Elrondex.Transaction do
   end
 
   # We calculate gasLimit only when is not calculated gasLimit: nil
+   @doc """
+  Calculates the gas limit for certain transaction
+  ## Arguments
+   * `tr` - the transaction details
+   * 'network' - the network used for that transaction
+   * 'balance' - the balance used for this tranaction
+  """
   def prepare_gas_limit(%Transaction{gasLimit: nil} = tr, network, balance) do
     # TODO calculate gasLimit
     tr =

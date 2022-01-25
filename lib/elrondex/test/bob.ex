@@ -20,13 +20,4 @@ defmodule Elrondex.Test.Bob do
   def address do
     account().address
   end
-  def transaction do
-    %Transaction{
-      account: account(),
-      sender: address(),
-      receiver: @reciver,
-      value: @value,
-      data: nil
-    }
-  end
 end
