@@ -27,3 +27,6 @@ elrondex-*.tar
 
 # IDEA files
 /.idea
+
+.DS_Store
+
