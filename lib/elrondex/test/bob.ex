@@ -1,5 +1,6 @@
 defmodule Elrondex.Test.Bob do
   alias Elrondex.{Account, Transaction}
+  alias Elrondex.Test.Alice
 
   @mnemonic ["flower" | List.duplicate("pizza", 23)]
   @reciver [11| List.duplicate("11", 12)]
@@ -19,5 +20,9 @@ defmodule Elrondex.Test.Bob do
   end
   def address do
     account().address
+  end
+
+  def transfer_1_egld_to_alice do
+    Transaction.transaction(account, Alice.account, 1_000_000_000_000_000_000)
   end
 end
