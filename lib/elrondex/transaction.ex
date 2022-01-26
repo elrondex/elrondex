@@ -39,6 +39,15 @@ defmodule Elrondex.Transaction do
             # Computed signature based on 1-9 signature fields
             signature: nil
 
+  @doc """
+  Creates a new transaction
+
+  ## Arguments
+   * `account` - the account that signs the transaction, called 'sender'.
+   * `receiver` - the receiver who receives native EGLD amount sent by sender.
+   * `value` - the native EGLD amount sent from sender to receiver.
+   * `data` - the data associated to the transaction.
+  """
   def transaction(%Account{} = account, receiver, value, data \\ nil) do
     %Transaction{
       account: account,
@@ -66,7 +75,18 @@ defmodule Elrondex.Transaction do
 
     Enum.reduce([:signature | @sign_fields], %{}, fn f, acc -> Map.put(acc, f, Map.get(tr, f)) end)
   end
-# Test
+@doc """
+  Signs a transaction
+
+  ## Arguments
+   * `tr` - the transaction to be signed.
+
+  ## Examples
+      iex> Elrondex.Test.Alice.transaction()
+      ...> |> Elrondex.Transaction.sign()
+      ...> |> Map.get(:signature)
+      "b690d400c48e07c2bd7aff2e06084bdfd8cb494a30d2ec39122bdd683c6b0a7bb42923563e7b69de519f094790c80e2f6ce3137f940c91daccd40902fc97cf03"
+  """
   def sign(%Transaction{} = tr) do
     signature =
       tr
@@ -77,6 +97,19 @@ defmodule Elrondex.Transaction do
     %{tr | signature: signature}
   end
 
+  @doc """
+  Verifies the signature of a transaction.
+
+  ## Arguments
+   * `tr` - the signed transaction
+   * 'Account' - the account that signs the transaction
+
+  ## Examples
+      iex> Elrondex.Test.Alice.transaction()
+      ...> |> Elrondex.Transaction.sign()
+      ...> |> Elrondex.Transaction.sign_verify()
+      true
+  """
   def sign_verify(%Transaction{} = tr, %Account{} = account) do
     data_to_sign(tr)
     |> Account.sign_verify(tr.signature, account)
@@ -86,6 +119,12 @@ defmodule Elrondex.Transaction do
     sign_verify(tr, Account.from_address(tr.sender))
   end
 
+   @doc """
+  Prepares a transaction to be done on certain network
+  ## Arguments
+   * `Transaction` - the transaction details
+   * 'network' - the network used for that transaction
+  """
   def prepare(%Transaction{} = tr, network) do
     tr = %{
       tr
@@ -118,6 +157,13 @@ defmodule Elrondex.Transaction do
   end
 
   # We calculate gasLimit only when is not calculated gasLimit: nil
+   @doc """
+  Calculates the gas limit for certain transaction
+  ## Arguments
+   * `tr` - the transaction details
+   * 'network' - the network used for that transaction
+   * 'balance' - the balance used for this tranaction
+  """
   def prepare_gas_limit(%Transaction{gasLimit: nil} = tr, network, balance) do
     # TODO calculate gasLimit
     tr =

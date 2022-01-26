@@ -21,7 +21,7 @@ defmodule Elrondex.AccountTest do
 
   test "from_mnemonic" do
     account = Account.from_mnemonic(@mnemonic)
-    # IO.inspect(account)    
+    # IO.inspect(account)
     assert_account(account)
   end
 
@@ -29,7 +29,7 @@ defmodule Elrondex.AccountTest do
     account =
       Account.from_private_key("4af3eacd64143a47cfa58d390452d7c960bf267f01f085f5ac513311d3e0c42b")
 
-    # IO.inspect(account)    
+    # IO.inspect(account)
     assert_account(account)
   end
 
@@ -37,7 +37,7 @@ defmodule Elrondex.AccountTest do
     account =
       Account.from_public_key("63ee8e2b1c43f405baeb628a88a8fa5c77ca9b5bccaa85ae3021fbd799b64507")
 
-    # IO.inspect(account)    
+    # IO.inspect(account)
     # Test address
     assert account.address == "erd1v0hgu2cug06qtwhtv29g3286t3mu4x6mej4gtt3sy8aa0xdkg5rsxckh4w"
 
@@ -71,11 +71,11 @@ defmodule Elrondex.AccountTest do
     assert Account.sign_verify(data_to_sign, hex_signature_lower, account) == true
   end
 
-  # TODO This is integration test and plan to move on new place 
+  # TODO This is integration test and plan to move on new place
   test "sign and verify transaction" do
     testnet = Network.testnet()
     {:ok, config} = REST.get_network_config(testnet)
-    # load testnet config 
+    # load testnet config
     testnet =
       testnet
       |> Network.config(config)
