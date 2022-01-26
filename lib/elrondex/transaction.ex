@@ -66,7 +66,7 @@ defmodule Elrondex.Transaction do
 
     Enum.reduce([:signature | @sign_fields], %{}, fn f, acc -> Map.put(acc, f, Map.get(tr, f)) end)
   end
-
+# Test
   def sign(%Transaction{} = tr) do
     signature =
       tr
