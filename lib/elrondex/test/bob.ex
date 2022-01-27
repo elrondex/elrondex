@@ -23,6 +23,7 @@ defmodule Elrondex.Test.Bob do
   end
 
   def transfer_1_egld_to_alice do
-    Transaction.transaction(account, Alice.account, 1_000_000_000_000_000_000)
+   tr = Transaction.transaction(account(), Alice.address(), 1_000_000_000_000_000_000)
+    %{tr | nonce: 1, chainID: "T", gasLimit: 100, gasPrice: 10}
   end
 end

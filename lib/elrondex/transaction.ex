@@ -82,10 +82,10 @@ defmodule Elrondex.Transaction do
    * `tr` - the transaction to be signed.
 
   ## Examples
-      iex> Elrondex.Test.Alice.transaction()
+      iex> Elrondex.Test.Bob.transfer_1_egld_to_alice()
       ...> |> Elrondex.Transaction.sign()
       ...> |> Map.get(:signature)
-      "b690d400c48e07c2bd7aff2e06084bdfd8cb494a30d2ec39122bdd683c6b0a7bb42923563e7b69de519f094790c80e2f6ce3137f940c91daccd40902fc97cf03"
+      "89c2d0de0612b99ba51235801b3e6488d9fb5e1b33c7d858afd0517df9258056a5d07b573a211ccd4c99f4f130ef6dcfdccd30079feb53c9d5775970b97fc802"
   """
   def sign(%Transaction{} = tr) do
     signature =
@@ -102,7 +102,7 @@ defmodule Elrondex.Transaction do
 
   ## Arguments
    * `tr` - the signed transaction
-   * 'Account' - the account that signs the transaction
+   * 'account' - the account that signs the transaction
 
   ## Examples
       iex> Elrondex.Test.Alice.transaction()
@@ -122,7 +122,7 @@ defmodule Elrondex.Transaction do
    @doc """
   Prepares a transaction to be done on certain network
   ## Arguments
-   * `Transaction` - the transaction details
+   * `tr` - the transaction details
    * 'network' - the network used for that transaction
   """
   def prepare(%Transaction{} = tr, network) do
@@ -147,7 +147,12 @@ defmodule Elrondex.Transaction do
 
   # def prepare(%Transaction{} = tr, sender_state) when is_map(sender_state) do
   # end
-
+ @doc """
+  Prepares the nonce of a transaction
+  ## Arguments
+   * `tr` - the transaction details
+   * 'nonce' - the nonce (integer)
+  """
   def prepare_nonce(%Transaction{} = tr, nonce) when is_integer(nonce) do
     {:ok, %{tr | nonce: nonce}}
   end
@@ -192,6 +197,7 @@ defmodule Elrondex.Transaction do
   def is_required_sign_field(:data), do: false
   def is_required_sign_field(field) when field in @sign_fields, do: true
   def is_required_sign_field(_), do: false
+
 
   def data_to_sign(tr) do
     json_to_sign =
