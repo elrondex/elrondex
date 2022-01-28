@@ -3,8 +3,6 @@ defmodule Elrondex.Test.Bob do
   alias Elrondex.Test.Alice
 
   @mnemonic ["flower" | List.duplicate("pizza", 23)]
-  @reciver [11| List.duplicate("11", 12)]
-  @value 1_000_000_000
 
   def account do
     Account.from_mnemonic(@mnemonic)
