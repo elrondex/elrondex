@@ -15,6 +15,11 @@ defmodule Elrondex.Account do
       iex> Elrondex.Test.Bob.account().public_key()
       ...> |> Elrondex.Account.public_key_to_address
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
+
+      iex> Elrondex.Test.Bob.account()
+      ...> |> Elrondex.Account.hex_public_key()
+      ...> |> Elrondex.Account.public_key_to_address()
+      "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def public_key_to_address(public_key)
       when is_binary(public_key) and byte_size(public_key) == 32 do
