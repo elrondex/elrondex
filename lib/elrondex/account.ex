@@ -1,6 +1,22 @@
 defmodule Elrondex.Account do
   alias Elrondex.{Account}
 
+  @moduledoc """
+  Functions for working with accounts.
+
+  Summary
+    Functions
+      public_key_to_address(public_key) - Returns an account's address from the public key.
+      generate_random() - Generates a random account.
+      from_private_key(private_key) - Generates an account based on a specific private key.
+      from_public_key(public_key) - Generates an account based on a specific public key.
+      from_address(address) - Generates an account based on a specific address
+      from_mnemonic(mnemonic) - Returns an account from the mnemonic
+      hex_public_key(account) - Converts an account's public key to hex format
+      hex_private_key(account) - Converts an account's private key to hex format
+      sign(data_to_sign, account) - Signs the data
+      sign_verify(data_to_sign, signature, account)
+  """
   defstruct address: nil,
             username: nil,
             master_node: nil,
@@ -8,12 +24,17 @@ defmodule Elrondex.Account do
             private_key: nil
 
   @doc """
-  Returns an account's address from the public key
+  Returns an account's address from the public key.
   ## Arguments
     * `public_key` - a public key (in binary or in hex format)
   ## Examples
       iex> Elrondex.Test.Bob.account().public_key()
       ...> |> Elrondex.Account.public_key_to_address
+      "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
+
+      iex> Elrondex.Test.Bob.account()
+      ...> |> Elrondex.Account.hex_public_key()
+      ...> |> Elrondex.Account.public_key_to_address()
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def public_key_to_address(public_key)
@@ -54,6 +75,12 @@ defmodule Elrondex.Account do
       ...> |> Elrondex.Account.from_private_key()
       ...> |> Map.get(:address)
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
+
+      iex> Elrondex.Test.Bob.account()
+      ...> |> Elrondex.Account.hex_private_key()
+      ...> |>Elrondex.Account.from_private_key()
+      ...> |> Map.get(:address)
+      "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def from_private_key(private_key)
       when is_binary(private_key) and byte_size(private_key) == 32 do
@@ -87,6 +114,12 @@ defmodule Elrondex.Account do
       ...> |>Elrondex.Account.from_public_key()
       ...> |>Map.get(:address)
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
+
+      iex> Elrondex.Test.Bob.account()
+      ...> |> Elrondex.Account.hex_private_key()
+      ...> |>Elrondex.Account.from_private_key()
+      ...> |> Map.get(:address)
+    "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def from_public_key(public_key)
       when is_binary(public_key) and byte_size(public_key) == 32 do
@@ -105,8 +138,8 @@ defmodule Elrondex.Account do
     from_public_key(public_key)
   end
 
-   @doc """
-  Generates an account based on a specific address .
+  @doc """
+  Generates an account based on a specific address.
 
   ## Arguments
    * `address` - a wallet's address
@@ -125,7 +158,7 @@ defmodule Elrondex.Account do
 
 
    @doc """
-  Returns an account from the mnemonic
+  Returns an account from the mnemonic.
 
   ## Arguments
    * `mnemonic` - a wallet's mnemonic
@@ -189,8 +222,8 @@ defmodule Elrondex.Account do
     ckd_priv({derived_key, child_chain}, t)
   end
 
-@doc """
-  Converts an account's public key to hex format
+  @doc """
+  Converts an account's public key to hex format.
 
   ## Arguments
    * `account` - the account that uses the key
@@ -204,8 +237,8 @@ defmodule Elrondex.Account do
   def hex_public_key(%Account{} = account) do
     Base.encode16(account.public_key, case: :lower)
   end
-@doc """
-  Converts an account's private key to hex format
+  @doc """
+  Converts an account's private key to hex format.
 
   ## Arguments
    * `account` - the account that uses the key
@@ -220,7 +253,7 @@ defmodule Elrondex.Account do
     Base.encode16(account.private_key, case: :lower)
   end
  @doc """
-  Signs the data
+  Signs the data.
 
   ## Arguments
    * `data_to_sign` - data to sign
