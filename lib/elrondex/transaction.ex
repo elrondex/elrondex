@@ -121,6 +121,7 @@ defmodule Elrondex.Transaction do
 
    @doc """
   Prepares a transaction to be done on certain network
+
   ## Arguments
    * `tr` - the transaction details
    * 'network' - the network used for that transaction
@@ -149,6 +150,7 @@ defmodule Elrondex.Transaction do
   # end
  @doc """
   Prepares the nonce of a transaction
+
   ## Arguments
    * `tr` - the transaction details
    * 'nonce' - the nonce (integer)
@@ -164,6 +166,7 @@ defmodule Elrondex.Transaction do
   # We calculate gasLimit only when is not calculated gasLimit: nil
    @doc """
   Calculates the gas limit for certain transaction
+
   ## Arguments
    * `tr` - the transaction details
    * 'network' - the network used for that transaction
@@ -198,7 +201,23 @@ defmodule Elrondex.Transaction do
   def is_required_sign_field(field) when field in @sign_fields, do: true
   def is_required_sign_field(_), do: false
 
+  @doc """
+  Returns the non-empty values of a transaction in jSON format
 
+  ## Arguments
+   * `tr` - the transaction details
+
+  ## Examples
+      iex> Elrondex.Test.Bob.transfer_1_egld_to_alice()
+      ...> |> Elrondex.Transaction.data_to_sign()
+      "{\"nonce\":1,
+      \"value\":\"1000000000000000000\",
+      \"receiver\":\"erd18n5zgmet82jvqag9n8pcvzdzlgqr3jhqxld2z6nwxzekh4cwt6ps87zfmu\",
+      \"sender\":\"erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59\",
+      \"gasPrice\":10
+      ,\"gasLimit\":100
+      ,\"chainID\":\"T\"}"
+  """
   def data_to_sign(tr) do
     json_to_sign =
       @sign_fields

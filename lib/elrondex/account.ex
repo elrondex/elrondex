@@ -105,7 +105,7 @@ defmodule Elrondex.Account do
     from_public_key(public_key)
   end
 
-   @doc """
+  @doc """
   Generates an account based on a specific address .
 
   ## Arguments
@@ -124,7 +124,8 @@ defmodule Elrondex.Account do
   end
 
 
-   @doc """
+
+  @doc """
   Returns an account from the mnemonic
 
   ## Arguments
@@ -189,7 +190,8 @@ defmodule Elrondex.Account do
     ckd_priv({derived_key, child_chain}, t)
   end
 
-@doc """
+
+  @doc """
   Converts an account's public key to hex format
 
   ## Arguments
@@ -204,7 +206,8 @@ defmodule Elrondex.Account do
   def hex_public_key(%Account{} = account) do
     Base.encode16(account.public_key, case: :lower)
   end
-@doc """
+
+  @doc """
   Converts an account's private key to hex format
 
   ## Arguments
