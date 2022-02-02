@@ -124,6 +124,7 @@ defmodule Elrondex.Account do
   end
 
 
+
   @doc """
   Returns an account from the mnemonic
 
@@ -189,6 +190,7 @@ defmodule Elrondex.Account do
     ckd_priv({derived_key, child_chain}, t)
   end
 
+
   @doc """
   Converts an account's public key to hex format
 
@@ -204,6 +206,7 @@ defmodule Elrondex.Account do
   def hex_public_key(%Account{} = account) do
     Base.encode16(account.public_key, case: :lower)
   end
+
   @doc """
   Converts an account's private key to hex format
 
