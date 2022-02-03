@@ -1,22 +1,6 @@
 defmodule Elrondex.Account do
   alias Elrondex.{Account}
 
-  @moduledoc """
-  Functions for working with accounts.
-
-  Summary
-    Functions
-      public_key_to_address(public_key) - Returns an account's address from the public key.
-      generate_random() - Generates a random account.
-      from_private_key(private_key) - Generates an account based on a specific private key.
-      from_public_key(public_key) - Generates an account based on a specific public key.
-      from_address(address) - Generates an account based on a specific address
-      from_mnemonic(mnemonic) - Returns an account from the mnemonic
-      hex_public_key(account) - Converts an account's public key to hex format
-      hex_private_key(account) - Converts an account's private key to hex format
-      sign(data_to_sign, account) - Signs the data
-      sign_verify(data_to_sign, signature, account)
-  """
   defstruct address: nil,
             username: nil,
             master_node: nil,
