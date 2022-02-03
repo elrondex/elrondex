@@ -11,13 +11,19 @@ defmodule Elrondex.Test.Bob do
     @mnemonic
   end
   def private_key do
-    account().private_key
+    account().private_key()
   end
   def public_key do
-    account().public_key
+    account().public_key()
   end
   def address do
-    account().address
+    account().address()
+  end
+  def public_key_hex do
+    Account.hex_public_key(account)
+  end
+  def public_key_hex do
+    Account.hex_private_key(account)
   end
 
   def transfer_1_egld_to_alice do
