@@ -7,8 +7,10 @@ defmodule Elrondex.Account do
             public_key: nil,
             private_key: nil
 
+
+
   @doc """
-  Returns an account's address from the public key
+  Returns an account's address from the public key.
   ## Arguments
     * `public_key` - a public key (in binary or in hex format)
   ## Examples
@@ -16,8 +18,7 @@ defmodule Elrondex.Account do
       ...> |> Elrondex.Account.public_key_to_address
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
 
-      iex> Elrondex.Test.Bob.account()
-      ...> |> Elrondex.Account.hex_public_key()
+      iex> Elrondex.Test.Bob.hex_public_key()
       ...> |> Elrondex.Account.public_key_to_address()
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
@@ -58,6 +59,10 @@ defmodule Elrondex.Account do
       iex> Elrondex.Test.Bob.private_key()
       ...> |> Elrondex.Account.from_private_key()
       ...> |> Map.get(:address)
+      "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
+
+      iex> Elrondex.Test.Bob.hex_private_key()
+      ...> |> Elrondex.Account.private_key_to_address()
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def from_private_key(private_key)
@@ -111,7 +116,7 @@ defmodule Elrondex.Account do
   end
 
   @doc """
-  Generates an account based on a specific address .
+  Generates an account based on a specific address.
 
   ## Arguments
    * `address` - a wallet's address
@@ -131,7 +136,7 @@ defmodule Elrondex.Account do
 
 
   @doc """
-  Returns an account from the mnemonic
+  Returns an account from the mnemonic.
 
   ## Arguments
    * `mnemonic` - a wallet's mnemonic
@@ -197,7 +202,7 @@ defmodule Elrondex.Account do
 
 
   @doc """
-  Converts an account's public key to hex format
+  Converts an account's public key to hex format.
 
   ## Arguments
    * `account` - the account that uses the key
@@ -213,7 +218,7 @@ defmodule Elrondex.Account do
   end
 
   @doc """
-  Converts an account's private key to hex format
+  Converts an account's private key to hex format.
 
   ## Arguments
    * `account` - the account that uses the key
@@ -227,8 +232,8 @@ defmodule Elrondex.Account do
   def hex_private_key(%Account{} = account) do
     Base.encode16(account.private_key, case: :lower)
   end
- @doc """
-  Signs the data
+  @doc """
+  Signs the data.
 
   ## Arguments
    * `data_to_sign` - data to sign
@@ -238,7 +243,7 @@ defmodule Elrondex.Account do
     :crypto.sign(:eddsa, :sha256, data_to_sign, [account.private_key, :ed25519])
   end
   @doc """
-  Verifies the signature of the data
+  Verifies the signature of the data.
 
   ## Arguments
    * `data_to_sign` - data to sign
