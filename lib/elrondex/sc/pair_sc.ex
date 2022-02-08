@@ -9,7 +9,7 @@ defmodule Elrondex.Sc.PairSc do
         token_out,
         value_out
       ) do
-    # data = "ESDTTransfer@#{token_in}@#{amount_in}@#{swap}@#{token_out}@#{amount_out}"    
+    # data = "ESDTTransfer@#{token_in}@#{amount_in}@#{swap}@#{token_out}@#{amount_out}"
     esdt = %ESDT{identifier: Pair.token_identifier(pair, token_in)}
 
     ESDT.transfer(account, pair.address, esdt, value_in, [
@@ -149,6 +149,11 @@ defmodule Elrondex.Sc.PairSc do
 
   def get_router_owner_managed_address(pair_address, %Network{} = network, opts \\ []) do
     get_router_one_address("getRouterOwnerManagedAddress", pair_address, network)
+  end
+
+  def get_extern_swap_gas_limit(pair_address, %Network{} = network, opts \\ []) do
+    Sc.view_map_call(pair_address, "getExternSwapGasLimit")
+    |> REST.post_vm_values_int(network)
   end
 
   defp get_router_one_address(sc_call, pair_address, %Network{} = network, opts \\ []) do
