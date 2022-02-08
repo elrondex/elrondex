@@ -20,27 +20,6 @@ defmodule Elrondex.Sc.PairSc do
     |> Map.put(:gasLimit, 50_000_000)
   end
 
-  @spec swap_tokens_fixed_output(
-          %Elrondex.Account{:address => any, optional(any) => any},
-          %Elrondex.Pair{:address => any, optional(any) => any},
-          binary,
-          integer,
-          binary,
-          any
-        ) :: %Elrondex.Transaction{
-          account: %Elrondex.Account{:address => any, optional(any) => any},
-          chainID: nil,
-          data: any,
-          gasLimit: 50_000_000,
-          gasPrice: nil,
-          network: nil,
-          nonce: nil,
-          receiver: any,
-          sender: any,
-          signature: nil,
-          value: any,
-          version: nil
-        }
   def swap_tokens_fixed_output(
         %Account{} = account,
         %Pair{} = pair,
@@ -86,7 +65,7 @@ defmodule Elrondex.Sc.PairSc do
     Transaction.transaction(account, pair.address, 0, data)
     |> Map.put(:gasLimit, 100_000_000)
   end
-
+  # here
   def get_amount_in(%Pair{} = pair, token_wanted_identifier, amount_wanted, %Network{} = network) do
     token_identifier = Pair.token_identifier(pair, token_wanted_identifier)
 
@@ -170,6 +149,11 @@ defmodule Elrondex.Sc.PairSc do
 
   def get_router_owner_managed_address(pair_address, %Network{} = network, opts \\ []) do
     get_router_one_address("getRouterOwnerManagedAddress", pair_address, network)
+  end
+
+  def get_extern_swap_gas_limit(pair_address, %Network{} = network, opts \\ []) do
+    Sc.view_map_call(pair_address, "getExternSwapGasLimit")
+    |> REST.post_vm_values_int(network)
   end
 
   defp get_router_one_address(sc_call, pair_address, %Network{} = network, opts \\ []) do
