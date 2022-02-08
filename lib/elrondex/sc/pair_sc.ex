@@ -20,27 +20,6 @@ defmodule Elrondex.Sc.PairSc do
     |> Map.put(:gasLimit, 50_000_000)
   end
 
-  @spec swap_tokens_fixed_output(
-          %Elrondex.Account{:address => any, optional(any) => any},
-          %Elrondex.Pair{:address => any, optional(any) => any},
-          binary,
-          integer,
-          binary,
-          any
-        ) :: %Elrondex.Transaction{
-          account: %Elrondex.Account{:address => any, optional(any) => any},
-          chainID: nil,
-          data: any,
-          gasLimit: 50_000_000,
-          gasPrice: nil,
-          network: nil,
-          nonce: nil,
-          receiver: any,
-          sender: any,
-          signature: nil,
-          value: any,
-          version: nil
-        }
   def swap_tokens_fixed_output(
         %Account{} = account,
         %Pair{} = pair,
