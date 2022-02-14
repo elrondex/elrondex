@@ -159,7 +159,6 @@ defmodule Elrondex.Transaction do
 
   def prepare_nonce(%Transaction{} = tr, nonce) when is_nil(nonce) do
     case REST.get_address_nonce(tr.network, tr.sender) do
-      # TODO check integer value
       {:ok, sender_nonce} -> {:ok, %{tr | nonce: sender_nonce}}
       {:error, reason} -> {:error, reason}
     end

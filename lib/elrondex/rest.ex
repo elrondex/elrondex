@@ -46,11 +46,13 @@ defmodule Elrondex.REST do
   def get_address_nonce(%Network{} = network, bech32) do
     Tesla.get(network.endpoint.client, "/address/#{bech32}/nonce")
     |> client_response(["nonce"])
+    |> int_response()
   end
 
   def get_address_balance(%Network{} = network, bech32) do
     Tesla.get(network.endpoint.client, "/address/#{bech32}/balance")
     |> client_response(["balance"])
+    |> int_response()
   end
 
   def get_address_esdt(%Network{} = network, bech32) do
