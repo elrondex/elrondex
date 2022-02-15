@@ -80,6 +80,11 @@ defmodule Elrondex.Sc.PairSc do
     |> REST.post_vm_values_int(network)
   end
 
+  def get_burned_token_amount(token_identifier, %Network{} = network, opts \\ []) do
+    Sc.view_map_call(token_identifier, "getBurnedTokenAmount")
+    |> REST.post_vm_values_int(network)
+  end
+
   def get_pair(pair_address, %Network{} = network, opts \\ []) do
     with {:ok, first_token} <- get_first_token_id(pair_address, network, opts),
          {:ok, first_esdt} <- ESDT.get_rest_esdt(%ESDT{identifier: first_token}, network),

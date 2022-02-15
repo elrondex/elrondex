@@ -8,6 +8,7 @@ defmodule Elrondex.Pair do
             second_token: nil,
             second_decimals: nil
 
+
   def get_egldbusd_pair do
     %Pair{
       address: "erd1qqqqqqqqqqqqqpgq3gmttefd840klya8smn7zeae402w2esw0n4sm8m04f",
