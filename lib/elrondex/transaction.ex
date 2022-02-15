@@ -126,28 +126,26 @@ defmodule Elrondex.Transaction do
    * `tr` - the transaction details
    * 'network' - the network used for that transaction
   """
-  def prepare(%Transaction{} = tr, network) do
-    tr = %{
-      tr
-      | network: network,
-        gasPrice: network.erd_min_gas_price,
-        # Is calculated by prepare_gas_limit
-        # gasLimit: network.erd_min_gas_limit,
-        chainID: network.erd_chain_id,
-        version: network.erd_min_transaction_version
-    }
-
-    with {:ok, sender_state} <- REST.get_address(network, tr.sender),
-         {:ok, tr} <- prepare_nonce(tr, Map.get(sender_state, "nonce")),
-         {:ok, tr} <- prepare_gas_limit(tr, network, Map.get(sender_state, "balance")) do
+  def prepare(%Transaction{} = tr, network, nonce \\ nil) do
+    with {:ok, tr} <- prepare_network(tr, network),
+         {:ok, tr} <- prepare_nonce(tr, nonce),
+         {:ok, tr} <- prepare_gas_limit(tr, tr.network) do
       tr
     else
       {:error, reason} -> {:error, reason}
     end
   end
 
-  # def prepare(%Transaction{} = tr, sender_state) when is_map(sender_state) do
-  # end
+  def prepare_network(%Transaction{} = tr, network) do
+    {:ok, %{tr | network: network,
+      gasPrice: network.erd_min_gas_price,
+      # Is calculated by prepare_gas_limit
+      # gasLimit: network.erd_min_gas_limit,
+      chainID: network.erd_chain_id,
+      version: network.erd_min_transaction_version
+     }}
+  end
+
  @doc """
   Prepares the nonce of a transaction
 
@@ -157,6 +155,13 @@ defmodule Elrondex.Transaction do
   """
   def prepare_nonce(%Transaction{} = tr, nonce) when is_integer(nonce) do
     {:ok, %{tr | nonce: nonce}}
+  end
+
+  def prepare_nonce(%Transaction{} = tr, nonce) when is_nil(nonce) do
+    case REST.get_address_nonce(tr.network, tr.sender) do
+      {:ok, sender_nonce} -> {:ok, %{tr | nonce: sender_nonce}}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   def prepare_nonce(%Transaction{} = _tr, nonce) do
@@ -170,9 +175,8 @@ defmodule Elrondex.Transaction do
   ## Arguments
    * `tr` - the transaction details
    * 'network' - the network used for that transaction
-   * 'balance' - the balance used for this tranaction
   """
-  def prepare_gas_limit(%Transaction{gasLimit: nil} = tr, network, balance) do
+  def prepare_gas_limit(%Transaction{gasLimit: nil} = tr, network) do
     # TODO calculate gasLimit
     tr =
       case tr.data do
@@ -187,7 +191,7 @@ defmodule Elrondex.Transaction do
     {:ok, tr}
   end
 
-  def prepare_gas_limit(%Transaction{} = tr, _network, _balance) do
+  def prepare_gas_limit(%Transaction{} = tr, _network) do
     {:ok, tr}
   end
 
