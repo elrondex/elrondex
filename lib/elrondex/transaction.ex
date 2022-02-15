@@ -202,7 +202,7 @@ defmodule Elrondex.Transaction do
   def is_required_sign_field(_), do: false
 
   @doc """
-  Returns raw data to sign JSON format.
+  Returns raw data to sign in JSON format.
 
   ## Arguments
    * `tr` - the transaction
