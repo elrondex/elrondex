@@ -59,6 +59,10 @@ defmodule Elrondex.Account do
       ...> |> Elrondex.Account.from_private_key()
       ...> |> Map.get(:address)
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
+
+      iex> Elrondex.Test.Bob.hex_private_key()
+      ...> |> Elrondex.Account.from_private_key()
+      "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def from_private_key(private_key)
       when is_binary(private_key) and byte_size(private_key) == 32 do
