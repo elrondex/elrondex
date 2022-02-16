@@ -151,6 +151,11 @@ defmodule Elrondex.Sc.PairSc do
     get_router_one_address("getRouterOwnerManagedAddress", pair_address, network)
   end
 
+  def get_extern_swap_gas_limit(pair_address, %Network{} = network, opts \\ []) do
+    Sc.view_map_call(pair_address, "getExternSwapGasLimit")
+    |> REST.post_vm_values_int(network)
+  end
+
   defp get_router_one_address(sc_call, pair_address, %Network{} = network, opts \\ []) do
     with {:ok, data} <-
            Sc.view_map_call(pair_address, sc_call)
