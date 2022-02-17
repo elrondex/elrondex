@@ -64,6 +64,17 @@ defmodule Elrondex.ESDT do
     %{tr | gasLimit: 2_200_000}
   end
 
+  def multi_esdt_nft_transfer(%Account{} = account, reciever, tokens, more_args \\ []) when is_list(tokens) and length(tokens) > 0 do
+    # tokens
+    tokens_no = length(tokens)
+    reciever_account = Account.from_address(reciever)
+    tokens_list = Enum.map(tokens, fn{t,v} -> [t, 0, v] end)
+    data = Sc.data_call("MultiESDTNFTTransfer", [reciever_account.public_key, tokens_no | List.flatten(tokens_list, more_args)])
+   # data = Sc.data_call("MultiESDTNFTTransfer", [reciver_account.public_key, tokens_no, tokens])
+    tr = Transaction.transaction(account,account.address,0,data)
+    %{tr | gasLimit: 1_100_000 * tokens_no}
+    end
+
   def transfer(%Account{} = account, receiver, %ESDT{} = esdt, value, more_args \\ [])
       when is_integer(value) do
     data = Sc.data_call("ESDTTransfer", [esdt.identifier, value | more_args])
