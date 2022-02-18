@@ -2,15 +2,15 @@ defmodule Elrondex.Sc.PairSc do
   alias Elrondex.{Sc, Transaction, Account, REST, ESDT, Pair, Network}
 
   @doc """
-  Swaps token1 amount for a minimum of token2 amount.
+  Swaps a certain token amount for a minimum of another token amount.
 
   ## Arguments
     * `account` - An elrond account (as described in lib/account)
     * `pair` -  An elrond pair (as described in lib/pair)
-    * `token_in` - Token_in to be swapped
-    * `value_in` - Token_in amount to be swapped
-    * `token_out` -  Token_out to be swapped
-    * `value_out` - Token_out amount to be swapped
+    * `token_in` - First token to be swapped
+    * `value_in` - Fixed amount of first token to be swapped
+    * `token_out` - Second token to be swapped
+    * `value_out` - Minimum amount of second token that we receive after swapping
   """
   def swap_tokens_fixed_input(
         %Account{} = account,
