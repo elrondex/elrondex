@@ -70,7 +70,6 @@ defmodule Elrondex.ESDT do
     reciever_account = Account.from_address(reciever)
     tokens_list = Enum.map(tokens, fn{t,v} -> [t, 0, v] end)
     data = Sc.data_call("MultiESDTNFTTransfer", [reciever_account.public_key, tokens_no | List.flatten(tokens_list, more_args)])
-   # data = Sc.data_call("MultiESDTNFTTransfer", [reciver_account.public_key, tokens_no, tokens])
     tr = Transaction.transaction(account,account.address,0,data)
     %{tr | gasLimit: 1_100_000 * tokens_no}
     end
