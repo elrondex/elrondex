@@ -178,6 +178,15 @@ defmodule Elrondex.Sc.PairSc do
     end
   end
 
+  def get_fee_state(pair_address, %Network{} = network) do
+    with {:ok, state} <-  Sc.view_map_call(pair_address, "getFeeState")
+    |> REST.post_vm_values_string(network) do
+      {:ok, get_enum_state(state)}
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
   defp get_enum_state(<<0>>), do: :inactive
   defp get_enum_state(<<1>>), do: :active
   defp get_enum_state(<<2>>), do: :active_noswaps
