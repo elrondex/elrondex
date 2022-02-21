@@ -2,15 +2,21 @@ defmodule Elrondex.Sc.PairSc do
   alias Elrondex.{Sc, Transaction, Account, REST, ESDT, Pair, Network}
 
   @doc """
-  Swaps a certain token amount for a minimum of another token amount.
+  Swaps a certain token amount with fixed amount value on input and minimum amount value on output.
 
   ## Arguments
-    * `account` - An elrond account (as described in lib/account)
-    * `pair` -  An elrond pair (as described in lib/pair)
-    * `token_in` - First token to be swapped
-    * `value_in` - Fixed amount of first token to be swapped
-    * `token_out` - Second token to be swapped
-    * `value_out` - Minimum amount of second token that we receive after swapping
+    * `account` - An account's struct
+    * `pair` -  A pair struct 
+    * `token_in` - Token identifier that we provide on input for swap operation
+    * `value_in` - Fixed amount value for input token
+    * `token_out` - Token identifier that we provide on output. The swap operation will return given token into account
+    * `value_out_min` - Minimum amount for output token that is required for a successful swap operation
+
+  ## Examples
+
+      iex> Elrondex.Test.Bob.swap_1_egld_to_min_100usdc
+      ...> |> Map.get(:data)
+      "ESDTTransfer@5745474c442d626434643739@0de0b6b3a7640000@73776170546f6b656e734669786564496e707574@555344432d633736663166@05f5e100"
   """
   def swap_tokens_fixed_input(
         %Account{} = account,
@@ -18,7 +24,7 @@ defmodule Elrondex.Sc.PairSc do
         token_in,
         value_in,
         token_out,
-        value_out
+        value_out_min
       ) do
     # data = "ESDTTransfer@#{token_in}@#{amount_in}@#{swap}@#{token_out}@#{amount_out}"
     esdt = %ESDT{identifier: Pair.token_identifier(pair, token_in)}
@@ -26,7 +32,7 @@ defmodule Elrondex.Sc.PairSc do
     ESDT.transfer(account, pair.address, esdt, value_in, [
       "swapTokensFixedInput",
       Pair.token_identifier(pair, token_out),
-      value_out
+      value_out_min
     ])
     |> Map.put(:gasLimit, 50_000_000)
   end
@@ -37,14 +43,14 @@ defmodule Elrondex.Sc.PairSc do
         token_in,
         value_in_max,
         token_out,
-        value_out
+        value_out_min
       ) do
     esdt = %ESDT{identifier: Pair.token_identifier(pair, token_in)}
 
     ESDT.transfer(account, pair.address, esdt, value_in_max, [
       "swapTokensFixedOutput",
       Pair.token_identifier(pair, token_out),
-      value_out
+      value_out_min
     ])
     |> Map.put(:gasLimit, 50_000_000)
   end
