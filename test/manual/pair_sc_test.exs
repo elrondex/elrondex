@@ -56,9 +56,9 @@ defmodule Manual.PairScTest do
     IO.puts("tx_hash: #{tx_hash}")
   end
 
-  # @tag :ship
+  @tag :skip
   test "prepare doctest swap_tokens_fixed_input" do
-    pair = Test.Utils.wegld_usdc_pair()
+    pair = Test.Pair.wegld_usdc_pair()
     account = Test.Bob.account()
 
     transaction =
