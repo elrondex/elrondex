@@ -82,6 +82,47 @@ defmodule Elrondex.Sc.PairSc do
     |> Map.put(:gasLimit, 50_000_000)
   end
 
+  # Pair a b
+  # add_liquidity acc, pair, a, 2, b, 5
+  # add_liquidity acc, pair, b, 5, a, 2
+  #
+
+  def add_liquidity(
+        %Account{} = account,
+        %Pair{first_token: first_token, second_token: second_token} = pair,
+        first_value,
+        second_value
+      ) do
+    add_liquidity(account, pair, first_token, first_value, second_token, second_value)
+  end
+
+  def add_liquidity(
+        %Account{} = account,
+        %Pair{first_token: first_token, second_token: second_token} = pair,
+        first_token,
+        first_value,
+        second_token,
+        second_value
+      ) do
+    ESDT.multi_esdt_nft_transfer(
+      account,
+      pair.address,
+      [{first_token, first_value}, {second_token, second_value}],
+      ["addLiquidity", first_value, second_value]
+    )
+  end
+
+  def add_liquidity(
+        %Account{} = account,
+        %Pair{first_token: first_token, second_token: second_token} = pair,
+        second_token,
+        second_value,
+        first_token,
+        first_value
+      ) do
+    add_liquidity(account, pair, first_token, first_value, second_token, second_value)
+  end
+
   def accept_esdt_payment(%Account{} = account, %Pair{} = pair, token_identifier, value)
       when is_binary(token_identifier) and is_integer(value) do
     esdt = %ESDT{identifier: Pair.token_identifier(pair, token_identifier)}
