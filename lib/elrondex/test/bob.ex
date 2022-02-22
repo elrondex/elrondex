@@ -19,6 +19,12 @@ defmodule Elrondex.Test.Bob do
   def address do
     account().address
   end
+  def hex_public_key do
+    Account.hex_public_key(account)
+  end
+  def hex_private_key do
+    Account.hex_private_key(account)
+  end
 
   def transfer_1_egld_to_alice do
    tr = Transaction.transaction(account(), Alice.address(), 1_000_000_000_000_000_000)

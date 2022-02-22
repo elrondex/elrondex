@@ -40,7 +40,7 @@ defmodule Elrondex.Transaction do
             signature: nil
 
   @doc """
-  Creates a new transaction
+  Creates a new transaction.
 
   ## Arguments
    * `account` - the account that signs the transaction, called 'sender'.
@@ -75,11 +75,11 @@ defmodule Elrondex.Transaction do
 
     Enum.reduce([:signature | @sign_fields], %{}, fn f, acc -> Map.put(acc, f, Map.get(tr, f)) end)
   end
-@doc """
-  Signs a transaction
+  @doc """
+  Signs a transaction.
 
   ## Arguments
-   * `tr` - the transaction to be signed.
+   * `tr` - the transaction to be signed
 
   ## Examples
       iex> Elrondex.Test.Bob.transfer_1_egld_to_alice()
@@ -120,7 +120,7 @@ defmodule Elrondex.Transaction do
   end
 
    @doc """
-  Prepares a transaction to be done on certain network
+  Prepares a transaction to be done on certain network.
 
   ## Arguments
    * `tr` - the transaction details
@@ -147,7 +147,7 @@ defmodule Elrondex.Transaction do
   end
 
  @doc """
-  Prepares the nonce of a transaction
+  Prepares the nonce of a transaction.
 
   ## Arguments
    * `tr` - the transaction details
@@ -169,8 +169,8 @@ defmodule Elrondex.Transaction do
   end
 
   # We calculate gasLimit only when is not calculated gasLimit: nil
-   @doc """
-  Calculates the gas limit for certain transaction
+  @doc """
+  Calculates the gas limit for certain transaction.
 
   ## Arguments
    * `tr` - the transaction details
@@ -206,10 +206,10 @@ defmodule Elrondex.Transaction do
   def is_required_sign_field(_), do: false
 
   @doc """
-  Returns the non-empty values of a transaction in jSON format
+  Returns raw data to sign in JSON format.
 
   ## Arguments
-   * `tr` - the transaction details
+   * `tr` - the transaction
 
   ## Examples
       iex> Elrondex.Test.Bob.transfer_1_egld_to_alice()
