@@ -1,13 +1,35 @@
 defmodule Elrondex.Sc.PairSc do
-  alias Elrondex.{Sc, Transaction, Account, REST, ESDT, Pair, Network}
+  alias Elrondex.{Sc, Transaction, Account, REST, ESDT, Pair, Network, Test}
+  alias Elrdonex.Sc.{PairSc}
 
+  @doc """
+  Swaps a certain token amount with fixed amount value on input and minimum amount value on output.
+
+  ## Arguments
+    * `account` - An account's struct
+    * `pair` -  A pair struct 
+    * `token_in` - Token identifier that we provide on input for swap operation
+    * `value_in` - Fixed amount value for input token
+    * `token_out` - Token identifier that we provide on output. The swap operation will return given token into account
+    * `value_out_min` - Minimum amount for output token that is required for a successful swap operation
+
+  ## Examples
+      iex> Elrondex.Sc.PairSc.swap_tokens_fixed_input(Elrondex.Test.Bob.account, 
+      ...> Elrondex.Test.Pair.wegld_usdc_pair, 
+      ...> "WEGLD-bd4d79", 
+      ...> 1000_000_000_000_000_000, 
+      ...> "USDC-c76f1f", 
+      ...> 2 * 50 * 1_000_000)
+      ...> |> Map.get(:data)
+      "ESDTTransfer@5745474c442d626434643739@0de0b6b3a7640000@73776170546f6b656e734669786564496e707574@555344432d633736663166@05f5e100"
+  """
   def swap_tokens_fixed_input(
         %Account{} = account,
         %Pair{} = pair,
         token_in,
         value_in,
         token_out,
-        value_out
+        value_out_min
       ) do
     # data = "ESDTTransfer@#{token_in}@#{amount_in}@#{swap}@#{token_out}@#{amount_out}"
     esdt = %ESDT{identifier: Pair.token_identifier(pair, token_in)}
@@ -15,11 +37,33 @@ defmodule Elrondex.Sc.PairSc do
     ESDT.transfer(account, pair.address, esdt, value_in, [
       "swapTokensFixedInput",
       Pair.token_identifier(pair, token_out),
-      value_out
+      value_out_min
     ])
     |> Map.put(:gasLimit, 50_000_000)
   end
 
+  @doc """
+  Swaps a certain token amount value on input for a fixed amount value on output.
+
+  ## Arguments
+    * `account` - An account's struct
+    * `pair` -  A pair struct 
+    * `token_in` - Token identifier that we provide on input for swap operation
+    * `value_in_max` - Maximum amount value for input token
+    * `token_out` - Token identifier that we provide on output. The swap operation will return given token into account
+    * `value_out` - Fixed amount value for output token
+
+  ## Examples
+      iex> Elrondex.Sc.PairSc.swap_tokens_fixed_output(Elrondex.Test.Bob.account, 
+      ...> Elrondex.Test.Pair.wegld_usdc_pair, 
+      ...> "WEGLD-bd4d79", 
+      ...> 130_000_000_000_000_0000, 
+      ...> "USDC-c76f1f", 
+      ...> 3 * 50 * 1_000_000)
+      ...> |> Map.get(:data)
+      "ESDTTransfer@5745474c442d626434643739@120a871cc0020000@73776170546f6b656e7346697865644f7574707574@555344432d633736663166@08f0d180"
+      
+  """
   def swap_tokens_fixed_output(
         %Account{} = account,
         %Pair{} = pair,
