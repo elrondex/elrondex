@@ -187,11 +187,10 @@ defmodule Elrondex.Sc.PairSc do
   """
   def get_fee_state(pair_address, %Network{} = network) do
     with {:ok, state} <-  Sc.view_map_call(pair_address, "getFeeState")
-    |> REST.post_vm_values_string(network) do
+    |> REST.post_vm_values_int(network) do
       case state do
-        <<0>> -> {:ok, false}
-        <<1>> -> {:ok, true}
-        <<"">> -> {:ok, :unkown}
+        0 -> {:ok, false}
+        1 -> {:ok, true}
       end
     else
       {:error, reason} -> {:error, reason}
