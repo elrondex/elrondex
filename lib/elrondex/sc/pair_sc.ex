@@ -90,37 +90,49 @@ defmodule Elrondex.Sc.PairSc do
   def add_liquidity(
         %Account{} = account,
         %Pair{first_token: first_token, second_token: second_token} = pair,
-        first_value,
-        second_value
-      ) do
-    add_liquidity(account, pair, first_token, first_value, second_token, second_value)
-  end
-
-  def add_liquidity(
-        %Account{} = account,
-        %Pair{first_token: first_token, second_token: second_token} = pair,
-        first_token,
-        first_value,
-        second_token,
-        second_value
+        first_value_transfer,
+        first_value_min,
+        second_value_transfer,
+        second_value_min
       ) do
     ESDT.multi_esdt_nft_transfer(
       account,
       pair.address,
-      [{first_token, first_value}, {second_token, second_value}],
-      ["addLiquidity", first_value, second_value]
-    )|> Map.put(:gasLimit, 100_000_000)
+      [{pair.first_token, first_value_transfer}, {pair.second_token, second_value_transfer}],
+      ["addLiquidity", first_value_min, second_value_min]
+    )
   end
 
   def add_liquidity(
         %Account{} = account,
         %Pair{first_token: first_token, second_token: second_token} = pair,
-        second_token,
-        second_value,
-        first_token,
-        first_value
+        {first_token, first_value_transfer, first_value_min},
+        {second_token, second_value_transfer, second_value_min}
       ) do
-    add_liquidity(account, pair, first_token, first_value, second_token, second_value)
+    add_liquidity(
+      account,
+      pair,
+      first_value_transfer,
+      first_value_min,
+      second_value_transfer,
+      second_value_min
+    )
+  end
+
+  def add_liquidity(
+        %Account{} = account,
+        %Pair{first_token: first_token, second_token: second_token} = pair,
+        {second_token, second_value_transfer, second_value_min},
+        {first_token, first_value_transfer, first_value_min}
+      ) do
+    add_liquidity(
+      account,
+      pair,
+      first_value_transfer,
+      first_value_min,
+      second_value_transfer,
+      second_value_min
+    )
   end
 
   def accept_esdt_payment(%Account{} = account, %Pair{} = pair, token_identifier, value)
