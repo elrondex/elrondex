@@ -7,18 +7,18 @@ defmodule Elrondex.Sc.PairSc do
 
   ## Arguments
     * `account` - An account's struct
-    * `pair` -  A pair struct 
+    * `pair` -  A pair struct
     * `token_in` - Token identifier that we provide on input for swap operation
     * `value_in` - Fixed amount value for input token
     * `token_out` - Token identifier that we provide on output. The swap operation will return given token into account
     * `value_out_min` - Minimum amount for output token that is required for a successful swap operation
 
   ## Examples
-      iex> Elrondex.Sc.PairSc.swap_tokens_fixed_input(Elrondex.Test.Bob.account, 
-      ...> Elrondex.Test.Pair.wegld_usdc_pair, 
-      ...> "WEGLD-bd4d79", 
-      ...> 1000_000_000_000_000_000, 
-      ...> "USDC-c76f1f", 
+      iex> Elrondex.Sc.PairSc.swap_tokens_fixed_input(Elrondex.Test.Bob.account,
+      ...> Elrondex.Test.Pair.wegld_usdc_pair,
+      ...> "WEGLD-bd4d79",
+      ...> 1000_000_000_000_000_000,
+      ...> "USDC-c76f1f",
       ...> 2 * 50 * 1_000_000)
       ...> |> Map.get(:data)
       "ESDTTransfer@5745474c442d626434643739@0de0b6b3a7640000@73776170546f6b656e734669786564496e707574@555344432d633736663166@05f5e100"
@@ -47,22 +47,22 @@ defmodule Elrondex.Sc.PairSc do
 
   ## Arguments
     * `account` - An account's struct
-    * `pair` -  A pair struct 
+    * `pair` -  A pair struct
     * `token_in` - Token identifier that we provide on input for swap operation
     * `value_in_max` - Maximum amount value for input token
     * `token_out` - Token identifier that we provide on output. The swap operation will return given token into account
     * `value_out` - Fixed amount value for output token
 
   ## Examples
-      iex> Elrondex.Sc.PairSc.swap_tokens_fixed_output(Elrondex.Test.Bob.account, 
-      ...> Elrondex.Test.Pair.wegld_usdc_pair, 
-      ...> "WEGLD-bd4d79", 
-      ...> 130_000_000_000_000_0000, 
-      ...> "USDC-c76f1f", 
+      iex> Elrondex.Sc.PairSc.swap_tokens_fixed_output(Elrondex.Test.Bob.account,
+      ...> Elrondex.Test.Pair.wegld_usdc_pair,
+      ...> "WEGLD-bd4d79",
+      ...> 130_000_000_000_000_0000,
+      ...> "USDC-c76f1f",
       ...> 3 * 50 * 1_000_000)
       ...> |> Map.get(:data)
       "ESDTTransfer@5745474c442d626434643739@120a871cc0020000@73776170546f6b656e7346697865644f7574707574@555344432d633736663166@08f0d180"
-      
+
   """
   def swap_tokens_fixed_output(
         %Account{} = account,
@@ -109,7 +109,7 @@ defmodule Elrondex.Sc.PairSc do
       pair.address,
       [{first_token, first_value}, {second_token, second_value}],
       ["addLiquidity", first_value, second_value]
-    )
+    )|> Map.put(:gasLimit, 100_000_000)
   end
 
   def add_liquidity(
@@ -128,7 +128,7 @@ defmodule Elrondex.Sc.PairSc do
     esdt = %ESDT{identifier: Pair.token_identifier(pair, token_identifier)}
 
     ESDT.transfer(account, pair.address, esdt, value, ["acceptEsdtPayment"])
-    |> Map.put(:gasLimit, 100_000_000)
+    |> Map.put(:gasLimit, 10000000)
   end
 
   def temporary_funds(%Account{} = account, %Pair{} = pair, token_identifier) do

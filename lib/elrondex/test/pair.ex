@@ -13,5 +13,16 @@ if Mix.env() != :prod do
         second_token: "USDC-c76f1f"
       }
     end
+
+    def test_pair do
+      %Elrondex.Pair{
+        address: "erd1qqqqqqqqqqqqqpgqcrqkv49gh7zlyereyxsrclpfl2rwrw3h0n4sq9cpus",
+        first_decimals: 18,
+        first_token: "WEGLD-bd4d79",
+        name: nil,
+        second_decimals: 6,
+        second_token: "USDC-c76f1f"
+      }
+    end
   end
 end
