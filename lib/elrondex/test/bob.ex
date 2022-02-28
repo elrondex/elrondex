@@ -5,6 +5,7 @@ if Mix.env() != :prod do
     alias Elrondex.Test.Alice
 
     @mnemonic ["flower" | List.duplicate("pizza", 23)]
+    
     def account do
       Account.from_mnemonic(@mnemonic)
     end
