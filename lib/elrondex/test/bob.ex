@@ -4,8 +4,7 @@ if Mix.env() != :prod do
     alias Elrondex.Sc.{PairSc}
     alias Elrondex.Test.Alice
 
-    #@mnemonic ["flower" | List.duplicate("pizza", 23)]
-    @mnemonic "orange ordinary silver slice draft cruel fuel demise impact rabbit join consider rely asset fault clown door reason special weird awesome diagram always dinosaur"
+    @mnemonic ["flower" | List.duplicate("pizza", 23)]
     def account do
       Account.from_mnemonic(@mnemonic)
     end
