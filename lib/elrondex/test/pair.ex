@@ -13,6 +13,5 @@ if Mix.env() != :prod do
         second_token: "USDC-c76f1f"
       }
     end
-
   end
 end
