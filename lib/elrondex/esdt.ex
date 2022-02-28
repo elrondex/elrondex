@@ -57,6 +57,22 @@ defmodule Elrondex.ESDT do
     %{tr | gasLimit: 60_000_000}
   end
 
+  @doc """
+  Makes a multiple token or NFT transfer.
+
+  ## Arguments
+    * `account` - An account's struct
+    * `reciever` - the reciever's address
+    * `first_token` - first token to be transfered
+    * `first_value` - value of first token to be transfered
+    * `second_token` - second token to be transfered
+    * `second_value` - value of second token to be transfered
+
+  For three or more tokens:
+    * `account` - An account's struct
+    * `reciever` - the reciever's address
+    * `tokens` - a list of tokens (eg: [{token, value}, {token, value}])
+  """
   def multi_esdt_nft_transfer(%Account{} = account, reciever, first_token,first_value, second_token, second_value) do
     reciever_account = Account.from_address(reciever)
     data = Sc.data_call("MultiESDTNFTTransfer", [reciever_account.public_key, 2, first_token, 0, first_value, second_token, 0, second_value])
@@ -71,7 +87,7 @@ defmodule Elrondex.ESDT do
     tokens_list = Enum.map(tokens, fn{t,v} -> [t, 0, v] end)
     data = Sc.data_call("MultiESDTNFTTransfer", [reciever_account.public_key, tokens_no | List.flatten(tokens_list, more_args)])
     tr = Transaction.transaction(account,account.address,0,data)
-    %{tr | gasLimit: 1_100_000 * tokens_no}
+    %{tr | gasLimit: 10_000_000}
     end
 
   def transfer(%Account{} = account, receiver, %ESDT{} = esdt, value, more_args \\ [])

@@ -87,6 +87,17 @@ defmodule Elrondex.Sc.PairSc do
   # add_liquidity acc, pair, b, 5, a, 2
   #
 
+  @doc """
+  Adds liquidity for a certain multiple transfer.
+
+  ## Arguments
+    * `account` - an account's struct
+    * `pair` - a pair's struct
+    * `first_value_transfer` - first token to be transfered
+    * `first_value_min` - the minmum ammount of first token required for adding liquidity
+    * `second_value_transfer` - second token to be transfered
+    * `second_value_min` - the minmum ammount of second token required for adding liquidity
+  """
   def add_liquidity(
         %Account{} = account,
         %Pair{first_token: first_token, second_token: second_token} = pair,
