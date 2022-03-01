@@ -181,14 +181,18 @@ defmodule Elrondex.Sc.PairSc do
     with {:ok, first_token} <- get_first_token_id(pair_address, network, opts),
          {:ok, first_esdt} <- ESDT.get_rest_esdt(%ESDT{identifier: first_token}, network),
          {:ok, second_token} <- get_second_token_id(pair_address, network, opts),
-         {:ok, second_esdt} <- ESDT.get_rest_esdt(%ESDT{identifier: second_token}, network) do
+         {:ok, second_esdt} <- ESDT.get_rest_esdt(%ESDT{identifier: second_token}, network),
+         {:ok, lp_token} <- get_lp_token_identifier(pair_address, network, opts),
+         {:ok, lp_esdt} <- ESDT.get_rest_esdt(%ESDT{identifier: lp_token}, network) do
       {:ok,
        %Pair{
          address: pair_address,
          first_token: first_token,
          first_decimals: first_esdt.numDecimals,
          second_token: second_token,
-         second_decimals: second_esdt.numDecimals
+         second_decimals: second_esdt.numDecimals,
+         lp_token: lp_token,
+         lp_decimals: lp_esdt.numDecimals
        }}
     else
       {:error, reason} -> {:error, reason}
