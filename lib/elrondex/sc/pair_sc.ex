@@ -274,6 +274,25 @@ defmodule Elrondex.Sc.PairSc do
       {:error, reason} -> {:error, reason}
     end
   end
+  
+  @doc """
+  Returns true if fee is enabled for given pair or false if its disabled.
+  
+  ## Arguments
+    * `pair_address` - A pair address 
+    * `network` - A network
+  """
+  def get_fee_state(pair_address, %Network{} = network) do
+    with {:ok, state} <-  Sc.view_map_call(pair_address, "getFeeState")
+    |> REST.post_vm_values_int(network) do
+      case state do
+        0 -> {:ok, false}
+        1 -> {:ok, true}
+      end
+    else
+      {:error, reason} -> {:error, reason}
+    end
+  end
 
   defp get_enum_state(<<0>>), do: :inactive
   defp get_enum_state(<<1>>), do: :active
