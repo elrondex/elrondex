@@ -88,7 +88,7 @@ defmodule Elrondex.Sc.PairSc do
   #
 
   @doc """
-  Adds liquidity for a certain multiple transfer.
+  Adds liquidity in a certain pool.
 
   ## Arguments
     * `account` - an account's struct
