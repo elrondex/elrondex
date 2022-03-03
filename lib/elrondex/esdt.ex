@@ -74,7 +74,8 @@ defmodule Elrondex.ESDT do
         first_token,
         first_value,
         second_token,
-        second_value
+        second_value,
+        more_args \\ []
       ) do
     reciever_account = Account.from_address(reciever)
 
