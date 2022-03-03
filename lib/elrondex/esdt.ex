@@ -79,10 +79,15 @@ defmodule Elrondex.ESDT do
       ) do
     reciever_account = Account.from_address(reciever)
 
-    multi_esdt_nft_transfer(account, reciever, [
-      {first_token, first_value},
-      {second_token, second_value}
-    ])
+    multi_esdt_nft_transfer(
+      account,
+      reciever,
+      [
+        {first_token, first_value},
+        {second_token, second_value}
+      ],
+      more_args
+    )
   end
 
   @doc """
