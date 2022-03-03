@@ -57,22 +57,68 @@ defmodule Elrondex.ESDT do
     %{tr | gasLimit: 60_000_000}
   end
 
-  def multi_esdt_nft_transfer(%Account{} = account, reciever, first_token,first_value, second_token, second_value) do
+  @doc """
+  Performs a two token transfer in a single transaction.
+
+  ## Arguments
+    * `account` - An account's struct
+    * `reciever` - The reciever's address
+    * `first_token` - First token to be transferred
+    * `first_value` - Value of first token to be transferred
+    * `second_token` - Second token to be transferred
+    * `second_value` - Value of second token to be transferred
+  """
+
+  def multi_esdt_nft_transfer(
+        %Account{} = account,
+        reciever,
+        first_token,
+        first_value,
+        second_token,
+        second_value
+      ) do
     reciever_account = Account.from_address(reciever)
-    data = Sc.data_call("MultiESDTNFTTransfer", [reciever_account.public_key, 2, first_token, 0, first_value, second_token, 0, second_value])
-    tr = Transaction.transaction(account,account.address,0,data)
+
+    data =
+      Sc.data_call("MultiESDTNFTTransfer", [
+        reciever_account.public_key,
+        2,
+        first_token,
+        0,
+        first_value,
+        second_token,
+        0,
+        second_value
+      ])
+
+    tr = Transaction.transaction(account, account.address, 0, data)
     %{tr | gasLimit: 2_200_000}
   end
 
-  def multi_esdt_nft_transfer(%Account{} = account, reciever, tokens, more_args \\ []) when is_list(tokens) and length(tokens) > 0 do
-    # tokens
+  @doc """
+  Performs multiple token transfer in a single transaction.
+
+  ## Arguments
+    * `account` - An account's struct
+    * `reciever` - The reciever's address
+    * `tokens` - a list of tokens (eg: [{token1, value1}, {token2, value2}, {token3, value3}])
+  """
+ 
+  def multi_esdt_nft_transfer(%Account{} = account, reciever, tokens, more_args \\ [])
+      when is_list(tokens) and length(tokens) > 0 do
     tokens_no = length(tokens)
     reciever_account = Account.from_address(reciever)
-    tokens_list = Enum.map(tokens, fn{t,v} -> [t, 0, v] end)
-    data = Sc.data_call("MultiESDTNFTTransfer", [reciever_account.public_key, tokens_no | List.flatten(tokens_list, more_args)])
-    tr = Transaction.transaction(account,account.address,0,data)
+    tokens_list = Enum.map(tokens, fn {t, v} -> [t, 0, v] end)
+
+    data =
+      Sc.data_call("MultiESDTNFTTransfer", [
+        reciever_account.public_key,
+        tokens_no | List.flatten(tokens_list, more_args)
+      ])
+
+    tr = Transaction.transaction(account, account.address, 0, data)
     %{tr | gasLimit: 1_100_000 * tokens_no}
-    end
+  end
 
   def transfer(%Account{} = account, receiver, %ESDT{} = esdt, value, more_args \\ [])
       when is_integer(value) do
