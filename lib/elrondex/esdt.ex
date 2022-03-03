@@ -68,7 +68,6 @@ defmodule Elrondex.ESDT do
     * `second_token` - Second token to be transferred
     * `second_value` - Value of second token to be transferred
   """
-
   def multi_esdt_nft_transfer(
         %Account{} = account,
         reciever,
@@ -79,20 +78,10 @@ defmodule Elrondex.ESDT do
       ) do
     reciever_account = Account.from_address(reciever)
 
-    data =
-      Sc.data_call("MultiESDTNFTTransfer", [
-        reciever_account.public_key,
-        2,
-        first_token,
-        0,
-        first_value,
-        second_token,
-        0,
-        second_value
-      ])
-
-    tr = Transaction.transaction(account, account.address, 0, data)
-    %{tr | gasLimit: 2_200_000}
+    multi_esdt_nft_transfer(account, reciever, [
+      {first_token, first_value},
+      {second_token, second_value}
+    ])
   end
 
   @doc """
@@ -103,7 +92,6 @@ defmodule Elrondex.ESDT do
     * `reciever` - The reciever's address
     * `tokens` - a list of tokens (eg: [{token1, value1}, {token2, value2}, {token3, value3}])
   """
- 
   def multi_esdt_nft_transfer(%Account{} = account, reciever, tokens, more_args \\ [])
       when is_list(tokens) and length(tokens) > 0 do
     tokens_no = length(tokens)
