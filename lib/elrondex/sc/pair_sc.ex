@@ -101,6 +101,7 @@ defmodule Elrondex.Sc.PairSc do
       [{pair.first_token, first_value_transfer}, {pair.second_token, second_value_transfer}],
       ["addLiquidity", first_value_min, second_value_min]
     )
+    |> Map.put(:gasLimit, 12_000_000)
   end
 
   def add_liquidity(
@@ -127,12 +128,29 @@ defmodule Elrondex.Sc.PairSc do
       ) do
     add_liquidity(
       account,
-      pair,
-      first_value_transfer,
+      %Pair{} = pair,
+      first_token,
       first_value_min,
-      second_value_transfer,
+      second_token,
       second_value_min
     )
+  end
+
+  def remove_liquidity(
+        %Account{} = account,
+        %Pair{} = pair,
+        liquidity,
+        first_token_amount_min,
+        second_token_amount_min
+      ) do
+    esdt = %ESDT{identifier: pair.lp_token}
+
+    ESDT.transfer(account, pair.address, esdt, liquidity, [
+      "removeLiquidity",
+      first_token_amount_min,
+      second_token_amount_min
+    ])
+    |> Map.put(:gasLimit, 12_000_000)
   end
 
   def accept_esdt_payment(%Account{} = account, %Pair{} = pair, token_identifier, value)
@@ -278,7 +296,7 @@ defmodule Elrondex.Sc.PairSc do
       {:error, reason} -> {:error, reason}
     end
   end
-  
+
   @doc """
   Returns true if fee is enabled for given pair or false if its disabled.
   
@@ -287,8 +305,9 @@ defmodule Elrondex.Sc.PairSc do
     * `network` - A network
   """
   def get_fee_state(pair_address, %Network{} = network) do
-    with {:ok, state} <-  Sc.view_map_call(pair_address, "getFeeState")
-    |> REST.post_vm_values_int(network) do
+    with {:ok, state} <-
+           Sc.view_map_call(pair_address, "getFeeState")
+           |> REST.post_vm_values_int(network) do
       case state do
         0 -> {:ok, false}
         1 -> {:ok, true}
