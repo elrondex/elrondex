@@ -15,11 +15,11 @@ defmodule Elrondex.Network do
             # e.g "1"
             erd_chain_id: nil,
             # e.g 18  
-            erd_denomination: nil,
+            erd_denomination: 18,
             # e.g 1500
-            erd_gas_per_data_byte: nil,
+            erd_gas_per_data_byte: 1500,
             # e.g "0.01"
-            erd_gas_price_modifier: nil,
+            erd_gas_price_modifier: "0.01",
             # e.g "v1.1.64.0"
             erd_latest_tag_software_version: nil,
             # e.g 400
@@ -35,7 +35,7 @@ defmodule Elrondex.Network do
             # e.g 400
             erd_num_nodes_in_shard: nil,
             # e.g 3 
-            erd_num_shards_without_meta: nil,
+            erd_num_shards_without_meta: 3,
             # e.g "2000000000000000000000000"
             erd_rewards_top_up_gradient_point: nil,
             # e.g 6000
@@ -57,6 +57,21 @@ defmodule Elrondex.Network do
     :erd_top_up_factor
   ]
 
+  def new(network_name, endpoint_type \\ :proxy, endpoint_url \\ nil) do
+    opts =
+      case endpoint_url do
+        nil -> [endpoint_type: endpoint_type]
+        endpoint_url -> [endpoint_type: endpoint_type, endpoint_url: endpoint_url]
+      end
+
+    network =
+      case network_name(network_name) do
+        :mainnet -> mainnet(opts)
+        :testnet -> testnet(opts)
+        :devnet -> devnet(opts)
+      end
+  end
+
   # cached network 
   def get(network) when network in [:mainnet, :testnet, :devnet] do
     network =
@@ -71,41 +86,35 @@ defmodule Elrondex.Network do
     config(network, config)
   end
 
+  def load(%Network{} = network) do
+    case REST.get_network_config(network) do
+      {:ok, config} -> {:ok, config(network, config)}
+      {:error, error} -> {:error, error}
+    end
+  end
+
   #
   # TODO https://gateway.elrond.com/ vs
   #      https://api.elrond.com/
 
   def mainnet(opts \\ []) do
-    endpoint =
-      opts
-      |> Keyword.get(:endpoint, :proxy)
-      |> Endpoint.new("https://gateway.elrond.com")
-
-    # |> Endpoint.new("https://api.elrond.com")
-
+    endpoint_type = Keyword.get(opts, :endpoint_type, :proxy)
+    endpoint_url = Keyword.get(opts, :endpoint_url, "https://gateway.elrond.com")
+    endpoint = Endpoint.new(endpoint_type, endpoint_url)
     %Network{name: :mainnet, endpoint: endpoint, erd_chain_id: "1"}
   end
 
   def testnet(opts \\ []) do
-    endpoint =
-      opts
-      |> Keyword.get(:endpoint, :proxy)
-      # |> Endpoint.new("https://testnet-api.elrond.com")
-      # ok
-      |> Endpoint.new("https://testnet-gateway.elrond.com")
-
-    # |> Endpoint.new("http://10.192.192.8:80801/")
-
+    endpoint_type = Keyword.get(opts, :endpoint_type, :proxy)
+    endpoint_url = Keyword.get(opts, :endpoint_url, "https://testnet-gateway.elrond.com")
+    endpoint = Endpoint.new(endpoint_type, endpoint_url)
     %Network{name: :testnet, endpoint: endpoint, erd_chain_id: "T"}
   end
 
   def devnet(opts \\ []) do
-    endpoint =
-      opts
-      |> Keyword.get(:endpoint, :proxy)
-      # |> Endpoint.new("https://devnet-api.elrond.com")
-      |> Endpoint.new("https://devnet-gateway.elrond.com")
-
+    endpoint_type = Keyword.get(opts, :endpoint_type, :proxy)
+    endpoint_url = Keyword.get(opts, :endpoint_url, "https://devnet-gateway.elrond.com")
+    endpoint = Endpoint.new(endpoint_type, endpoint_url)
     %Network{name: :devnet, endpoint: endpoint, erd_chain_id: "D"}
   end
 
@@ -141,4 +150,12 @@ defmodule Elrondex.Network do
   defp config_set(network, _key, _value, _type) do
     network
   end
+
+  defp network_name(network_name) when network_name in [:mainnet, :testnet, :devnet] do
+    network_name
+  end
+
+  defp network_name("mainnet"), do: :mainnet
+  defp network_name("testnet"), do: :testnet
+  defp network_name("devnet"), do: :devnet
 end
