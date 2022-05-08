@@ -7,8 +7,6 @@ defmodule Elrondex.Account do
             public_key: nil,
             private_key: nil
 
-
-
   @doc """
   Returns an account's address from the public key.
   ## Arguments
@@ -134,8 +132,6 @@ defmodule Elrondex.Account do
     from_public_key(public_key)
   end
 
-
-
   @doc """
   Returns an account from the mnemonic.
 
@@ -201,7 +197,6 @@ defmodule Elrondex.Account do
     ckd_priv({derived_key, child_chain}, t)
   end
 
-
   @doc """
   Converts an account's public key to hex format.
 
@@ -233,6 +228,7 @@ defmodule Elrondex.Account do
   def hex_private_key(%Account{} = account) do
     Base.encode16(account.private_key, case: :lower)
   end
+
   @doc """
   Signs the data.
 
@@ -243,6 +239,7 @@ defmodule Elrondex.Account do
   def sign(data_to_sign, %Account{} = account) do
     :crypto.sign(:eddsa, :sha256, data_to_sign, [account.private_key, :ed25519])
   end
+
   @doc """
   Verifies the signature of the data.
 

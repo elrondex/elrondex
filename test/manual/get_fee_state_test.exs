@@ -37,8 +37,13 @@ defmodule GetFeeStateTest do
 
   @tag :skip
   test "check all pair states" do
-    {:ok, addr}  = RouterSc.get_all_pairs(@router_addr, @mainnet)
-    x = Enum.map(addr, fn %{address: a, first_token: b, second_token: c} -> [a, b, c, PairSc.get_fee_state(a, @mainnet)] end)
+    {:ok, addr} = RouterSc.get_all_pairs(@router_addr, @mainnet)
+
+    x =
+      Enum.map(addr, fn %{address: a, first_token: b, second_token: c} ->
+        [a, b, c, PairSc.get_fee_state(a, @mainnet)]
+      end)
+
     IO.inspect(x)
   end
 end

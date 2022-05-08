@@ -75,6 +75,7 @@ defmodule Elrondex.Transaction do
 
     Enum.reduce([:signature | @sign_fields], %{}, fn f, acc -> Map.put(acc, f, Map.get(tr, f)) end)
   end
+
   @doc """
   Signs a transaction.
 
@@ -119,7 +120,7 @@ defmodule Elrondex.Transaction do
     sign_verify(tr, Account.from_address(tr.sender))
   end
 
-   @doc """
+  @doc """
   Prepares a transaction to be done on certain network.
 
   ## Arguments
@@ -137,16 +138,19 @@ defmodule Elrondex.Transaction do
   end
 
   def prepare_network(%Transaction{} = tr, network) do
-    {:ok, %{tr | network: network,
-      gasPrice: network.erd_min_gas_price,
-      # Is calculated by prepare_gas_limit
-      # gasLimit: network.erd_min_gas_limit,
-      chainID: network.erd_chain_id,
-      version: network.erd_min_transaction_version
+    {:ok,
+     %{
+       tr
+       | network: network,
+         gasPrice: network.erd_min_gas_price,
+         # Is calculated by prepare_gas_limit
+         # gasLimit: network.erd_min_gas_limit,
+         chainID: network.erd_chain_id,
+         version: network.erd_min_transaction_version
      }}
   end
 
- @doc """
+  @doc """
   Prepares the nonce of a transaction.
 
   ## Arguments
