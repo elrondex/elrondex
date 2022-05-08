@@ -1,11 +1,10 @@
 if Mix.env() != :prod do
   defmodule Elrondex.Test.Bob do
-    alias Elrondex.{Account, Transaction, Test}
-    alias Elrondex.Sc.{PairSc}
+    alias Elrondex.{Account, Transaction}
     alias Elrondex.Test.Alice
 
     @mnemonic ["flower" | List.duplicate("pizza", 23)]
-    
+
     def account do
       Account.from_mnemonic(@mnemonic)
     end

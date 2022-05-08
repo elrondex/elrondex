@@ -1,8 +1,5 @@
 if Mix.env() != :prod do
   defmodule Elrondex.Test.Pair do
-    alias Elrondex.{Network}
-    alias Elrondex.Sc.{PairSc}
-
     def wegld_usdc_pair do
       %Elrondex.Pair{
         address: "erd1qqqqqqqqqqqqqpgqeel2kumf0r8ffyhth7pqdujjat9nx0862jpsg2pqaq",

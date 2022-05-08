@@ -1,12 +1,19 @@
-defmodule Elrondex.Test.Alice do
-  alias Elrondex.{Account, Transaction}
-  @mnemonic ["pizza" | List.duplicate("flower", 23)]
+if Mix.env() != :prod do
+  defmodule Elrondex.Test.Alice do
+    alias Elrondex.{Account}
 
-  def account do
-    Account.from_mnemonic(@mnemonic)
-  end
-  def address do
-    account().address
-  end
+    @mnemonic ["pizza" | List.duplicate("flower", 23)]
 
+    def account do
+      Account.from_mnemonic(@mnemonic)
+    end
+
+    def mnemonic do
+      @mnemonic
+    end
+
+    def address do
+      account().address
+    end
+  end
 end
