@@ -1,8 +1,9 @@
 defmodule Mainnet.PairEgldUsdcTest do
-  alias Elrondex.{ESDT, Account, Transaction, Network, REST}
+  alias Elrondex.{Network}
   alias Elrondex.Sc.PairSc
 
   use ExUnit.Case
+  require Logger
   @moduletag network: :mainnet
 
   @pair_egldusdc_address "erd1qqqqqqqqqqqqqpgqeel2kumf0r8ffyhth7pqdujjat9nx0862jpsg2pqaq"
@@ -12,7 +13,9 @@ defmodule Mainnet.PairEgldUsdcTest do
   test "get egldusdc pair" do
     mainnet = Network.get(:mainnet)
     {:ok, pair} = PairSc.get_pair(@pair_egldusdc_address, mainnet)
-    # IO.inspect(pair)
+
+    Logger.debug(inspect(pair))
+
     assert pair.first_token == @wegld_identifier
     assert pair.first_decimals == 18
     assert pair.second_token == @usdc_identifier

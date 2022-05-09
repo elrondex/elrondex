@@ -1,7 +1,8 @@
 defmodule Mainnet.EsdtMexTest do
-  alias Elrondex.{ESDT, Account, Transaction, Network, REST}
+  alias Elrondex.{ESDT, Network}
 
   use ExUnit.Case
+  require Logger
   @moduletag network: :mainnet
 
   @mex_identifier "MEX-455c57"
@@ -13,6 +14,7 @@ defmodule Mainnet.EsdtMexTest do
     esdt = %ESDT{identifier: @mex_identifier}
     {:ok, mex} = ESDT.get_rest_esdt(esdt, mainnet)
     # IO.inspect(mex)
+    Logger.debug(inspect(mex))
 
     assert mex.name == "MEX"
     assert mex.type == "FungibleESDT"

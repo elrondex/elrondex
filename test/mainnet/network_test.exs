@@ -2,12 +2,19 @@ defmodule Mainnet.NetworkTest do
   alias Elrondex.{Network}
 
   use ExUnit.Case
+  require Logger
+  @moduletag network: :mainnet
 
   test "online mainnet" do
     mainnet = Network.get(:mainnet)
     {:ok, mainnet_load} = Network.new(:mainnet) |> Network.load()
     assert mainnet == mainnet_load
+
+    # TODO pretty debug log
     # IO.inspect(mainnet)
+    Logger.debug(inspect(mainnet))
+    # IO.puts(inspect(mainnet))
+
     assert mainnet.name == :mainnet
     assert mainnet.erd_chain_id == "1"
     assert mainnet.endpoint.type == :proxy

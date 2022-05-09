@@ -1,8 +1,10 @@
 defmodule Mainnet.RouterScTest do
-  alias Elrondex.{ESDT, Account, Transaction, Network, REST}
+  alias Elrondex.{Network}
   alias Elrondex.Sc.RouterSc
 
   use ExUnit.Case
+  require Logger
+  @moduletag network: :mainnet
 
   @router_address "erd1qqqqqqqqqqqqqpgqq66xk9gfr4esuhem3jru86wg5hvp33a62jps2fy57p"
 

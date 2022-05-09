@@ -1,8 +1,9 @@
 defmodule Mainnet.WrapEgldScTest do
-  alias Elrondex.{Account, Transaction, Network, REST}
+  alias Elrondex.{Network}
   alias Elrondex.Sc.WrapEgldSc
 
   use ExUnit.Case
+  require Logger
   @moduletag network: :mainnet
 
   @wegld_identifier "WEGLD-bd4d79"
@@ -17,6 +18,7 @@ defmodule Mainnet.WrapEgldScTest do
       |> WrapEgldSc.get_wrapped_egld_token_id(mainnet)
 
     # IO.inspect(value)
+    Logger.debug(inspect(value))
 
     assert value == @wegld_identifier
   end

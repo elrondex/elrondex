@@ -1,7 +1,8 @@
 defmodule Mainnet.EsdtUsdcTest do
-  alias Elrondex.{ESDT, Account, Transaction, Network, REST}
+  alias Elrondex.{ESDT, Network}
 
   use ExUnit.Case
+  require Logger
   @moduletag network: :mainnet
 
   @usdc_identifier "USDC-c76f1f"
@@ -12,7 +13,8 @@ defmodule Mainnet.EsdtUsdcTest do
     # ESDT
     esdt = %ESDT{identifier: @usdc_identifier}
     {:ok, usdc} = ESDT.get_rest_esdt(esdt, mainnet)
-    # IO.inspect(usdc)
+
+    Logger.debug(inspect(usdc))
 
     assert usdc.name == "WrappedUSDC"
     assert usdc.type == "FungibleESDT"
