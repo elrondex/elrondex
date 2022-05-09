@@ -1,14 +1,13 @@
 defmodule Devnet.NetworkTest do
-  alias Elrondex.{NetworkTest}
-  alias Elrondex.{Network, REST}
+  alias Elrondex.{Network}
 
   use ExUnit.Case
 
   test "online devnet" do
     devnet = Network.get(:devnet)
     {:ok, devnet_load} = Network.new(:devnet) |> Network.load()
-    assert devnet = devnet_load
-    IO.inspect(devnet)
+    assert devnet == devnet_load
+    # IO.inspect(devnet)
     assert devnet.name == :devnet
     assert devnet.erd_chain_id == "D"
     assert devnet.endpoint.type == :proxy

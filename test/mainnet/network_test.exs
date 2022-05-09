@@ -1,13 +1,12 @@
 defmodule Mainnet.NetworkTest do
-  alias Elrondex.{NetworkTest}
-  alias Elrondex.{Network, REST}
+  alias Elrondex.{Network}
 
   use ExUnit.Case
 
   test "online mainnet" do
     mainnet = Network.get(:mainnet)
     {:ok, mainnet_load} = Network.new(:mainnet) |> Network.load()
-    assert mainnet = mainnet_load
+    assert mainnet == mainnet_load
     # IO.inspect(mainnet)
     assert mainnet.name == :mainnet
     assert mainnet.erd_chain_id == "1"

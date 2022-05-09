@@ -25,6 +25,14 @@ if Mix.env() != :prod do
       account().address
     end
 
+    def hex_public_key do
+      account() |> Account.hex_public_key()
+    end
+
+    def hex_private_key do
+      account() |> Account.hex_private_key()
+    end
+
     def transfer_1_egld_to_alice do
       tr = Transaction.transaction(account(), Alice.address(), 1_000_000_000_000_000_000)
       %{tr | nonce: 1, chainID: "T", gasLimit: 100, gasPrice: 10}

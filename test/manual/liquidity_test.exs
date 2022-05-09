@@ -1,4 +1,4 @@
-defmodule Manual.PairScTest do
+defmodule Manual.LiquidityTest do
   use ExUnit.Case
 
   alias Elrondex.{Network, Account, REST, Transaction, Test, ESDT}

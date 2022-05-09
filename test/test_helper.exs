@@ -1,5 +1,8 @@
 ExUnit.start()
 
+Logger.configure(level: :info)
+# Logger.configure(level: :debug)
+
 defmodule TestData do
   use ExUnit.Case
 
