@@ -1,4 +1,4 @@
-
+[![Hex.pm](https://img.shields.io/hexpm/v/elrondex.svg)](https://hex.pm/packages/elrondex)
 
 Welcome to Elrondex. 
 
