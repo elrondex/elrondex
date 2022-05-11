@@ -42,6 +42,27 @@ bob_mnemonic
 {:ok, "5e3bd0cc962a1eb2ad68b8610d8ae4ae9255c041e1d73ae4d23caf9956dae9c4"}
 ```
 
+### Get WEGLD/USDC pair info from Maiar DEX on mainnet
+
+```elixir
+mainnet = Elrondex.Network.mainnet()
+pair_address = "erd1qqqqqqqqqqqqqpgqeel2kumf0r8ffyhth7pqdujjat9nx0862jpsg2pqaq"
+
+Elrondex.Sc.PairSc.get_pair(pair_address, mainnet)
+
+{:ok,
+ %Elrondex.Pair{
+   address: "erd1qqqqqqqqqqqqqpgqeel2kumf0r8ffyhth7pqdujjat9nx0862jpsg2pqaq",
+   first_decimals: 18,
+   first_token: "WEGLD-bd4d79",
+   lp_decimals: 18,
+   lp_token: "EGLDUSDC-594e5e",
+   name: nil,
+   second_decimals: 6,
+   second_token: "USDC-c76f1f"
+ }}
+```
+
 <!--
 **elrondex/elrondex** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
