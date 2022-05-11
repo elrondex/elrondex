@@ -1,6 +1,46 @@
-### Elixir libraries to interact with Elrond Blockchain ⚡ and its components $EGLD, Arwen, WASM, DeFI, SC, ESDTs, NFTs, SFTs, $MEX, DEX, AMM
+
+
+Welcome to Elrondex. 
+
+Elixir libraries to interact with Elrond Blockchain ⚡ and its components $EGLD, Arwen, WASM, DeFI, SC, ESDTs, NFTs, SFTs, $MEX, DEX, AMM
 
 This is **DRAFT** code it will definitely be changed in the near future. 
+
+
+## Installation
+
+Add `elrondex` to your list of dependencies in `mix.exs`:
+
+```elixir
+def deps do
+  [
+    {:elrondex, "~> 0.1.0"}
+  ]
+end
+```
+
+## Examples
+
+### Transfer 1 EGLD from Bob account to Alice account on testnet network
+
+```elixir
+alias Elrondex.{Account, Transaction, Network, REST}
+
+network = Network.testnet()
+
+# 24 words
+bob_mnemonic = "quick alone describe ..."
+alice_address = "erd18n5zgmet82jvqag9n8pcvzdzlgqr3jhqxld2z6nwxzekh4cwt6ps87zfmu"
+
+bob_mnemonic 
+  |> Account.from_mnemonic()
+  |> Transaction.transaction(alice_address, 1_000_000_000_000_000_000)
+  |> Transaction.prepare(network)
+  |> Transaction.sign()
+  |> REST.post_transaction_send()
+
+{:ok, "5e3bd0cc962a1eb2ad68b8610d8ae4ae9255c041e1d73ae4d23caf9956dae9c4"}
+```
 
 <!--
 **elrondex/elrondex** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
