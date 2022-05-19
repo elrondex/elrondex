@@ -159,6 +159,12 @@ defmodule Elrondex.Struct do
     Map.put(struct, key, value)
   end
 
+   def struct_set_decimal(struct, key, value, _require, _since_match, _default)
+      when is_integer(value) do
+    Map.put(struct, key, value)
+  end
+
+
   def struct_set_decimal(struct, key, value, require, since_match, default)
       when is_binary(value) do
     case Decimal.parse(value) do
@@ -168,6 +174,14 @@ defmodule Elrondex.Struct do
       _ ->
         raise "invalid decimal value #{value} when load #{struct.__struct__} struct for key #{key}"
     end
+  end
+ 
+  def struct_set_decimal(struct, key, value, require, since_match, default) when is_integer(value) do
+    Decimal.new(value)
+  end
+
+  def struct_set_decimal(struct, key, value, require, since_match, default) when is_float(value) do
+    Decimal.from_float(value)
   end
 
   def struct_set_decimal(struct, key, nil, @require_no, _since_match, default)
