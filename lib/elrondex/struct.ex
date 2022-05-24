@@ -175,7 +175,7 @@ defmodule Elrondex.Struct do
   end
 
   def struct_set_decimal(struct, key, value, require, since_match, default) when is_float(value) do
-    Map.put(struct, key, Decimal.new(value))
+    Map.put(struct, key, Decimal.from_float(value))
   end
 
   def struct_set_decimal(struct, key, nil, @require_no, _since_match, default)
