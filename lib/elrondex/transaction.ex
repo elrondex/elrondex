@@ -43,7 +43,7 @@ defmodule Elrondex.Transaction do
   Creates a new transaction.
 
   ## Arguments
-   * `account` - the account that signs the transaction, called 'sender'.
+   * `account` - the account that signs the transaction, called `sender`.
    * `receiver` - the receiver who receives native EGLD amount sent by sender.
    * `value` - the native EGLD amount sent from sender to receiver.
    * `data` - the data associated to the transaction.
@@ -103,7 +103,7 @@ defmodule Elrondex.Transaction do
 
   ## Arguments
    * `tr` - the signed transaction
-   * 'account' - the account that signs the transaction
+   * `account` - the account that signs the transaction
 
   ## Examples
       iex> Elrondex.Test.Bob.transfer_1_egld_to_alice()
@@ -125,7 +125,7 @@ defmodule Elrondex.Transaction do
 
   ## Arguments
    * `tr` - the transaction details
-   * 'network' - the network used for that transaction
+   * `network` - the network used for that transaction
   """
   def prepare(%Transaction{} = tr, network, nonce \\ nil) do
     with {:ok, tr} <- prepare_network(tr, network),
@@ -155,7 +155,7 @@ defmodule Elrondex.Transaction do
 
   ## Arguments
    * `tr` - the transaction details
-   * 'nonce' - the nonce (integer)
+   * `nonce` - the nonce (integer)
   """
   def prepare_nonce(%Transaction{} = tr, nonce) when is_integer(nonce) do
     {:ok, %{tr | nonce: nonce}}
@@ -178,7 +178,7 @@ defmodule Elrondex.Transaction do
 
   ## Arguments
    * `tr` - the transaction details
-   * 'network' - the network used for that transaction
+   * `network` - the network used for that transaction
   """
   def prepare_gas_limit(%Transaction{gasLimit: nil} = tr, network) do
     # TODO calculate gasLimit

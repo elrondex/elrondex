@@ -9,8 +9,10 @@ defmodule Elrondex.Account do
 
   @doc """
   Returns an account's address from the public key.
+
   ## Arguments
     * `public_key` - a public key (in binary or in hex format)
+
   ## Examples
       iex> Elrondex.Test.Bob.account().public_key()
       ...> |> Elrondex.Account.public_key_to_address
@@ -93,8 +95,8 @@ defmodule Elrondex.Account do
 
   ## Examples
       iex> Elrondex.Test.Bob.public_key()
-      ...> |>Elrondex.Account.from_public_key()
-      ...> |>Map.get(:address)
+      ...> |> Elrondex.Account.from_public_key()
+      ...> |> Map.get(:address)
       "erd1edmdkecu95u6aj9ehd0lf3d97qw85k86pkqqdu5029zcydslg7qs3tdc59"
   """
   def from_public_key(public_key)
