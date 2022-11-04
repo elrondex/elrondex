@@ -97,6 +97,13 @@ defmodule Elrondex.REST do
     |> client_response(["transaction"])
   end
 
+  def get_transaction_status(%Network{} = network, tx_hash, query_opts \\ []) do
+    query = Keyword.take(query_opts, [:sender])
+
+    Tesla.get(network.endpoint.client, "/transaction/#{tx_hash}/status", query: query)
+    |> client_response(["status"])
+  end
+
   # "error" => "Not Found", "message" => "Cannot GET /network/esdts", "statusCode" => 404
   # TODO? This involves a vm query request to the ESDT address. 
   # Is working on https://gateway.elrond.com
