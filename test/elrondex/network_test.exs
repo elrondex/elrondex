@@ -18,15 +18,15 @@ defmodule Elrondex.NetworkTest do
   end
 
   def assert_mainnet(network) do
-    assert_network(network, :mainnet, "1", :proxy, "https://gateway.elrond.com")
+    assert_network(network, :mainnet, "1", :proxy, "https://gateway.multiversx.com")
   end
 
   def assert_testnet(network) do
-    assert_network(network, :testnet, "T", :proxy, "https://testnet-gateway.elrond.com")
+    assert_network(network, :testnet, "T", :proxy, "https://testnet-gateway.multiversx.com")
   end
 
   def assert_devnet(network) do
-    assert_network(network, :devnet, "D", :proxy, "https://devnet-gateway.elrond.com")
+    assert_network(network, :devnet, "D", :proxy, "https://devnet-gateway.multiversx.com")
   end
 
   test "default mainnet" do

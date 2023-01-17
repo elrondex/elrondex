@@ -18,7 +18,7 @@ defmodule Mainnet.NetworkTest do
     assert mainnet.name == :mainnet
     assert mainnet.erd_chain_id == "1"
     assert mainnet.endpoint.type == :proxy
-    assert mainnet.endpoint.url == "https://gateway.elrond.com"
+    assert mainnet.endpoint.url == "https://gateway.multiversx.com"
     assert mainnet.erd_denomination == 18
     assert mainnet.erd_min_transaction_version == 1
     assert mainnet.erd_num_shards_without_meta == 3

@@ -4,7 +4,7 @@ defmodule Elrondex.Network do
   @moduledoc """
   State of Elrond Network.
   """
-  # TODO Node type (proxy vs node)	
+  # TODO Node type (proxy vs node)
   #
   defstruct name: nil,
             # TODO Do we need state?
@@ -14,7 +14,7 @@ defmodule Elrondex.Network do
             # Config value loaded from `https://api.elrond.com/network/config`
             # e.g "1"
             erd_chain_id: nil,
-            # e.g 18  
+            # e.g 18
             erd_denomination: 18,
             # e.g 1500
             erd_gas_per_data_byte: 1500,
@@ -34,7 +34,7 @@ defmodule Elrondex.Network do
             erd_num_metachain_nodes: nil,
             # e.g 400
             erd_num_nodes_in_shard: nil,
-            # e.g 3 
+            # e.g 3
             erd_num_shards_without_meta: 3,
             # e.g "2000000000000000000000000"
             erd_rewards_top_up_gradient_point: nil,
@@ -72,7 +72,7 @@ defmodule Elrondex.Network do
       end
   end
 
-  # cached network 
+  # cached network
   def get(network) when network in [:mainnet, :testnet, :devnet] do
     network =
       case network do
@@ -99,21 +99,21 @@ defmodule Elrondex.Network do
 
   def mainnet(opts \\ []) do
     endpoint_type = Keyword.get(opts, :endpoint_type, :proxy)
-    endpoint_url = Keyword.get(opts, :endpoint_url, "https://gateway.elrond.com")
+    endpoint_url = Keyword.get(opts, :endpoint_url, "https://gateway.multiversx.com")
     endpoint = Endpoint.new(endpoint_type, endpoint_url)
     %Network{name: :mainnet, endpoint: endpoint, erd_chain_id: "1"}
   end
 
   def testnet(opts \\ []) do
     endpoint_type = Keyword.get(opts, :endpoint_type, :proxy)
-    endpoint_url = Keyword.get(opts, :endpoint_url, "https://testnet-gateway.elrond.com")
+    endpoint_url = Keyword.get(opts, :endpoint_url, "https://testnet-gateway.multiversx.com")
     endpoint = Endpoint.new(endpoint_type, endpoint_url)
     %Network{name: :testnet, endpoint: endpoint, erd_chain_id: "T"}
   end
 
   def devnet(opts \\ []) do
     endpoint_type = Keyword.get(opts, :endpoint_type, :proxy)
-    endpoint_url = Keyword.get(opts, :endpoint_url, "https://devnet-gateway.elrond.com")
+    endpoint_url = Keyword.get(opts, :endpoint_url, "https://devnet-gateway.multiversx.com")
     endpoint = Endpoint.new(endpoint_type, endpoint_url)
     %Network{name: :devnet, endpoint: endpoint, erd_chain_id: "D"}
   end

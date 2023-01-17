@@ -11,7 +11,7 @@ defmodule Devnet.NetworkTest do
     assert devnet.name == :devnet
     assert devnet.erd_chain_id == "D"
     assert devnet.endpoint.type == :proxy
-    assert devnet.endpoint.url == "https://devnet-gateway.elrond.com"
+    assert devnet.endpoint.url == "https://devnet-gateway.multiversx.com"
     assert devnet.erd_denomination == 18
     assert devnet.erd_min_transaction_version == 1
     assert devnet.erd_num_shards_without_meta == 3
