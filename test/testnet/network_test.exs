@@ -11,7 +11,7 @@ defmodule Testnet.NetworkTest do
     assert testnet.name == :testnet
     assert testnet.erd_chain_id == "T"
     assert testnet.endpoint.type == :proxy
-    assert testnet.endpoint.url == "https://testnet-gateway.elrond.com"
+    assert testnet.endpoint.url == "https://testnet-gateway.multiversx.com"
     assert testnet.erd_denomination == 18
     assert testnet.erd_min_transaction_version == 1
     assert testnet.erd_num_shards_without_meta == 3
