@@ -1,5 +1,6 @@
 defmodule Elrondex.Transaction do
-  alias Elrondex.{Transaction, Account, REST}
+  alias Elrondex.{Transaction, Account, REST, Network}
+  alias Elrondex.Transaction.TrStatusWorker
 
   @sign_fields [
     :nonce,
@@ -269,5 +270,9 @@ defmodule Elrondex.Transaction do
       data when is_integer(data) -> "\"#{field}\":#{data}"
       _ -> nil
     end
+  end
+
+  def wait(tx, network, opts \\ []) do
+    TrStatusWorker.wait_pending_transaction(tx, network, opts)
   end
 end

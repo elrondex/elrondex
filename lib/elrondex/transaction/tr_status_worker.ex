@@ -95,4 +95,36 @@ defmodule Elrondex.Transaction.TrStatusWorker do
   defp get_status_map(status) do
     status
   end
+
+  def wait_pending_transaction({:ok, tx_hash}, %Network{} = network, opts \\ []) do
+    case REST.get_transaction_status(network, tx_hash) do
+      {:ok, status} ->
+        # IO.puts("status #{status}")
+        opts = Keyword.put(opts, :isFirst, false)
+        status2 = get_status_map(status)
+
+        case is_pending_status(status2) do
+          true ->
+            wait_pending_transaction({:ok, tx_hash}, network, opts)
+
+          false ->
+            REST.get_transaction(network, tx_hash, Keyword.take(opts, [:withResults]))
+        end
+
+      {:error, error} ->
+        IO.puts("error #{error}")
+
+        case Keyword.get(opts, :isFirst, true) do
+          true ->
+            wait_pending_transaction({:ok, tx_hash}, network, opts)
+
+          false ->
+            {:error, error}
+        end
+    end
+  end
+
+  def wait_pending_transaction({:error, error}, %Network{} = network, opts) do
+    {:error, error}
+  end
 end

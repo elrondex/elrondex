@@ -38,9 +38,9 @@ defmodule Elrondex.Network do
             erd_num_shards_without_meta: 3,
             # e.g "2000000000000000000000000"
             erd_rewards_top_up_gradient_point: nil,
-            # e.g 6000
+            # Round duration in miliseconds e.g 6000 = 6 seconds
             erd_round_duration: nil,
-            # e.g 14400
+            # Rounds per epoch e.g 14400 rounds = 14400 * 6 seconds = 1 Day
             erd_rounds_per_epoch: nil,
             # e.g 63
             erd_shard_consensus_group_size: nil,

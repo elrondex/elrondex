@@ -4,7 +4,7 @@ defmodule Elrondex.Sc.PairSc do
 
   @doc """
   Swaps a certain token amount with fixed amount value on input and minimum amount value on output.
-
+  
   ## Arguments
     * `account` - An account's struct
     * `pair` -  A pair struct 
@@ -12,7 +12,7 @@ defmodule Elrondex.Sc.PairSc do
     * `value_in` - Fixed amount value for input token
     * `token_out` - Token identifier that we provide on output. The swap operation will return given token into account
     * `value_out_min` - Minimum amount for output token that is required for a successful swap operation
-
+  
   ## Examples
       iex> Elrondex.Sc.PairSc.swap_tokens_fixed_input(Elrondex.Test.Bob.account, 
       ...> Elrondex.Test.Pair.wegld_usdc_pair, 
@@ -44,7 +44,7 @@ defmodule Elrondex.Sc.PairSc do
 
   @doc """
   Swaps a certain token amount value on input for a fixed amount value on output.
-
+  
   ## Arguments
     * `account` - An account's struct
     * `pair` -  A pair struct 
@@ -52,7 +52,7 @@ defmodule Elrondex.Sc.PairSc do
     * `value_in_max` - Maximum amount value for input token
     * `token_out` - Token identifier that we provide on output. The swap operation will return given token into account
     * `value_out` - Fixed amount value for output token
-
+  
   ## Examples
       iex> Elrondex.Sc.PairSc.swap_tokens_fixed_output(Elrondex.Test.Bob.account, 
       ...> Elrondex.Test.Pair.wegld_usdc_pair, 
@@ -299,7 +299,7 @@ defmodule Elrondex.Sc.PairSc do
 
   @doc """
   Returns true if fee is enabled for given pair or false if its disabled.
-
+  
   ## Arguments
     * `pair_address` - A pair address 
     * `network` - A network

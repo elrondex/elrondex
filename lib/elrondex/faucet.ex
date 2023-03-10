@@ -28,7 +28,7 @@ defmodule Elrondex.Faucet do
   @impl true
   def init({active, faucet_mnemonic}) do
     state =
-      case active do
+      case active && is_binary(faucet_mnemonic) do
         true -> %__MODULE__{active: true, account: Account.from_mnemonic(faucet_mnemonic)}
         false -> %__MODULE__{active: false, account: nil}
       end
